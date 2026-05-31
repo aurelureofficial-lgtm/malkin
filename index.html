@@ -1,137 +1,447 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Happy Valentine :)</title>
-    <link
-      rel="stylesheet"
-    />
-    <link rel="shortcut icon" type="image/png" href="./img/heart.svg" />
-    <link rel="stylesheet" href="style/style.css" />
-  </head>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Georgia', serif; overflow-x: hidden; }
 
-  <body>
-    <div class="container">
-      <div class="one">
-        <h1 class="one">
-          Hey
-          <span id="name">xyz</span>
-        </h1>
-        <p class="two" id="greetingText">I really like your name btw!</p>
+  #scene {
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient(135deg, #ffe0ec 0%, #ffc2d4 30%, #ffb3c6 60%, #ff99bb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 1.5s ease;
+  }
+
+  #scene.opened {
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe0ec 25%, #ffd6e8 50%, #ffcce4 75%, #ffe0ec 100%);
+  }
+
+  .sparkle {
+    position: absolute;
+    pointer-events: none;
+    animation: sparkleFly linear infinite;
+    opacity: 0;
+  }
+
+  .sparkle::before {
+    content: '✦';
+    font-size: 12px;
+    color: #ff80aa;
+  }
+
+  @keyframes sparkleFly {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 1; }
+    80% { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(-100px) scale(1.2); }
+  }
+
+  #envelope-wrap {
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+    animation: floatEnv 3s ease-in-out infinite;
+    transition: transform 0.3s;
+  }
+
+  #envelope-wrap:hover { transform: scale(1.05); }
+
+  @keyframes floatEnv {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-18px); }
+  }
+
+  #envelope-wrap.clicking {
+    animation: none;
+    transform: scale(1.08);
+  }
+
+  .env-outer {
+    width: 300px;
+    height: 200px;
+    position: relative;
+    filter: drop-shadow(0 10px 40px rgba(255,100,150,0.5)) drop-shadow(0 0 60px rgba(255,150,180,0.3));
+  }
+
+  .env-body {
+    width: 300px;
+    height: 200px;
+    background: linear-gradient(160deg, #ffb3c6 0%, #ff80aa 50%, #ff4d88 100%);
+    border-radius: 8px;
+    position: absolute;
+    top: 0; left: 0;
+    border: 2px solid #ff6699;
+  }
+
+  .env-flap-bottom {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 110px solid #ff99bb;
+    z-index: 2;
+  }
+
+  .env-flap-left {
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 0;
+    border-top: 100px solid transparent;
+    border-bottom: 100px solid transparent;
+    border-left: 130px solid #ffaac4;
+    z-index: 2;
+  }
+
+  .env-flap-right {
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-top: 100px solid transparent;
+    border-bottom: 100px solid transparent;
+    border-right: 130px solid #ff99bb;
+    z-index: 2;
+  }
+
+  .env-flap-top {
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 110px solid #ff6699;
+    z-index: 3;
+    transform-origin: top center;
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .env-flap-top.open {
+    transform: rotateX(180deg);
+  }
+
+  .env-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: 0 1px 4px rgba(180,0,60,0.4);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .env-shine {
+    position: absolute;
+    top: 10px; left: 20px;
+    width: 60px; height: 20px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    transform: rotate(-20deg);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  #heartbeat-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,180,200,0.92);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInHB 0.4s ease;
+  }
+
+  #heartbeat-screen.active { display: flex; }
+
+  @keyframes fadeInHB {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .hb-heart {
+    font-size: 120px;
+    animation: heartPulse 0.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255,50,100,0.7)) drop-shadow(0 0 60px rgba(255,100,150,0.5));
+  }
+
+  @keyframes heartPulse {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.3); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.2); }
+    70% { transform: scale(1); }
+  }
+
+  .floating-heart {
+    position: fixed;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+    z-index: 5;
+    opacity: 0;
+  }
+
+  @keyframes floatUp {
+    0% { opacity: 0.9; transform: translateY(0) rotate(0deg) scale(1); }
+    20% { opacity: 1; }
+    80% { opacity: 0.5; }
+    100% { opacity: 0; transform: translateY(-110vh) rotate(360deg) scale(0.8); }
+  }
+
+  .burst-heart {
+    position: fixed;
+    pointer-events: none;
+    animation: burstOut cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    z-index: 50;
+    font-size: 20px;
+  }
+
+  @keyframes burstOut {
+    0% { opacity: 1; transform: translate(0,0) scale(1); }
+    60% { opacity: 0.8; }
+    100% { opacity: 0; }
+  }
+
+  #letter-section {
+    display: none;
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    min-height: 100vh;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px 60px;
+  }
+
+  #letter-section.show { display: flex; }
+
+  .letter-card {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(255,150,180,0.4);
+    border-radius: 24px;
+    padding: 48px 44px;
+    max-width: 680px;
+    width: 100%;
+    box-shadow: 0 8px 60px rgba(255,100,150,0.2), 0 2px 20px rgba(255,150,180,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+    animation: fadeSlideUp 1s ease forwards;
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .letter-top {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .letter-top .greeting {
+    font-size: 28px;
+    color: #c2185b;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .letter-body {
+    font-size: 16.5px;
+    line-height: 1.85;
+    color: #5a1230;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .letter-footer {
+    margin-top: 36px;
+    text-align: center;
+    font-size: 18px;
+    color: #c2185b;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .letter-footer .name {
+    margin-top: 10px;
+    font-size: 22px;
+    color: #ad1457;
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .letter-card { padding: 28px 18px; }
+    .letter-body { font-size: 15px; }
+    .env-outer, .env-body { width: 260px; height: 170px; }
+    .env-flap-top { border-left-width: 130px; border-right-width: 130px; border-top-width: 95px; }
+    .env-flap-bottom { border-left-width: 130px; border-right-width: 130px; border-bottom-width: 90px; }
+    .env-flap-left { border-top-width: 85px; border-bottom-width: 85px; border-left-width: 110px; }
+    .env-flap-right { border-top-width: 85px; border-bottom-width: 85px; border-right-width: 110px; }
+  }
+</style>
+</head>
+<body>
+<div id="scene">
+  <div id="sparkle-container"></div>
+
+  <div id="envelope-wrap" onclick="openEnvelope()">
+    <div class="env-outer">
+      <div class="env-body"></div>
+      <div class="env-flap-bottom"></div>
+      <div class="env-flap-left"></div>
+      <div class="env-flap-right"></div>
+      <div class="env-flap-top" id="envFlap"></div>
+      <div class="env-shine"></div>
+      <div class="env-label">💌 Open Me Malkin</div>
+    </div>
+  </div>
+
+  <div id="heartbeat-screen">
+    <div class="hb-heart">❤️</div>
+  </div>
+
+  <div id="letter-section">
+    <div class="letter-card">
+      <div class="letter-top">
+        <div class="greeting">falani ji 🥹</div>
       </div>
-      <div class="three">
-        <p>It's Valentine!!! :D</p>
-      </div>
-      <div class="four">
-        <div class="text-box">
-          <p class="hbd-chatbox">
-            Happy Valentine's Day!! Yeee! Loveee youuu so soo muchh etc... 
-          </p>
-          <p class="fake-btn">Send</p>
-        </div>
-      </div>
-      <div class="five">
-        <p class="idea-1">That's what I was going to do.</p>
-        <p class="idea-2">But then I stopped.</p>
-        <p class="idea-3">
-          I realised, I wanted to do something <strong>special</strong>.
-        </p>
-        <p class="idea-4">Because,</p>
-        <p class="idea-5">
-          You are Special
-          <span>:)</span>
-        </p>
-        <p class="idea-6">
-          <span>S</span>
-          <span>O</span>
-        </p>
-      </div>
-      <div class="six">
-        <img src="img/vector.jpg" alt="" class = "girl-dp" id="imagePath" />
-        <div class="wish">
-          <h3 class="wish-hbd">Happy Valentine's Day Malkinnn </h3>
-          <h5 id="wishText">kuch kuch</h5>
-        </div>
-      </div>
-      <div class="seven">
-        <div class="baloons">
-          <img src="img/balloon.svg" alt="" />
-          <!-- <img src="img/music-note.svg" alt="" /> -->
-          <img src="img/smiling.svg" />
-          <img src="img/heart.svg" />
-          <!-- <img src="img/happy.svg" alt="" /> -->
-          <img src="img/balloon.svg" alt="" />
-          <!-- <img src="img/music-note.svg" alt="" /> -->
-          <!-- <img src="img/smiling.svg" /> -->
-          <img src="img/heart.svg" />
-          <img src="img/balloon.svg" alt="" />
-          <img src="img/music-note.svg" alt="" />
-          <img src="img/heart.svg" />
-          <img src="img/balloon.svg" alt="" />
-          <!-- <img src="img/music-note.svg" alt="" /> -->
-          <!-- <img src="img/smiling.svg" /> -->
-          
-          <img src="img/heart.svg" />
-          <img src="img/balloon.svg" alt="" />
-          <img src="img/heart.svg" />
-          <img src="img/heart.svg" />
-          <img src="img/music-note.svg" alt="" />
-          <img src="img/smiling.svg" />
-         
-          <img src="img/happy.svg" alt="" />
-          <img src="img/balloon.svg" alt="" />
-          <img src="img/heart.svg" />
-          <!-- <img src="img/music-note.svg" alt="" /> -->
-          <!-- <img src="img/heart.svg" />
-          
-          <img src="img/happy.svg" alt="" />
-          <img src="img/balloon.svg" alt="" />
-          <img src="img/music-note.svg" alt="" /> -->
-          <img src="img/smiling.svg" />
-          <!-- <img src="img/heart.svg" /> -->
-          <!-- <img src="img/happy.svg" alt="" /> -->
-        </div>
-      </div>
-      <div class="eight">
-        <svg viewBox="0 0 40 40" xmlnssvg/heart.svg.org/2000/svg">
-        <circle cx="20" cy="20" r="20" />
-      </svg>
-        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="20" />
-        </svg>
-        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="20" />
-        </svg>
-        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="20" />
-        </svg>
-        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="20" />
-        </svg>
-        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="20" />
-        </svg>
-        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="20" />
-        </svg>
-        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="20" />
-        </svg>
-        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="20" r="20" />
-        </svg>
-      </div>
-      <div class="nine">
-        <p>Okay, come back to the chat now, malkin 😭 you already saw that game wish…😭 so this is all I could make in such a short time.</p>
-        <p id="replay">Or click, if you want to watch it again.</p>
-        <p class="last-smile">:)</p>
+      <div class="letter-body">Soo today finally 5 month of this year 2026 is going to END!!! and yk from 2026 all the years i live with you Will be my fav I always feels blessed , lucky with you Like I won yrr ligit I'm soo greatfull 😭🥹🥹🫠🫠 ik thanks bolna allow nhi hai but I want to apricate you yrr you always make me feels sepecial yrr Loveee you soo soo muchhhh reallyyy Loveeeeeeeee youuu soo sooo sooo muchhh yrr 🥹😭🫂 ik abhi tu soo rhi hai a nhi bhi but yrr sote ve bhotttt bhotttt pyarii lag ti hai yrr 🥹🫠🫠🫂😭😭 ik I'm not much cool guy but han my love for you is real , pure 🥹🫂 yk You are my fav person on the earth 🥹🥹🫂😭 I still remember that night 15 feb jab me sadi se aaya then story pe lick fir hamara convo 🥹🫂 then like achi frdship huhi and han kabhi best friend nhi bane me phele bhot jada irritating bhi lagta tha terko hann me huu yrr I'm really sorry about it but I Always try to be perfect and tuze kabhi nhi irritate karu per in the end tu ho jati hai tu roo deti hai me kabhi bhi nhi chata ki meri wajhse se teri ankh me even ek ansu bhi aaye but in the end meri koi baat hurt kr jati hai Andddd I'm really sorry about it yyrrr don't say ki ye terko bich bich me kya ho jata hai kyu ese soch ta hai I always see reality jo real hai vo hai and I don't want to be fake in front of you neverrrrr !!!! 🥹🥹🫠😭😭🧿🧿 anddd theennn in the school hamra milna upper watercooler ke pass damm puri school life me kabhi fav memory nhi thi but in last tere se friendship then these memories merko yrr tbh sirf tere wajhe se school ki yaad aati hia ki han roj milna dekhna like wow yrr 😭🫠🥹I'm soo blessed then 22 dec you choose me as your bf idk I'm a good or not but han I will always try to be a good bf and i'll never lie promise In our relationship 🫂 and agar meri koi baat aapko buri lage to please batana merko kabhi mat chupaa ki ye bura laga hai coz i dont want any missunderstanding in our realtionship 😭🎀🫂 I still remeber jab tu mere liye vo bracelete layi thi 🫠 tune merko ankush sir ka bhana leke upe bulaaya han i agree meri bhot fati and then ham uper mile fir udhar sdeio ke pass tune diya and hamne handshake bhi kiya yrr ligit i fall in love with you that day han merko attration tha but han like itname jann ta nhi tha  per after taht I was in love han like me irritate bhi karta tha ,hu vese dekhe toh heheh anyways then on 22 DEC 🥹fav day of my life and best dayyy fr
+
+Phir 14 Jan ka vo first hug 🥹🫂 yrrr I can't even explain ki vo moment mere liye kitna special tha. Pehli baar laga ki han ye sab real hai, koi dream nhi Aur phir 21 Jan ka vo day 😭🎀, meri life ke sabse beautiful moments me se ek. Aaj bhi jab vo sab yaad karta hu na toh automatically smile aa jati hai yrr frr ksm se I won yrr Aur yrr sach bolu? Mere liye sirf hugs ya kisses special nahi hai. Mere liye vo chhoti chhoti baate zyada special hai. School me tujhe dekhna, random baate karna, tere messages ka wait karna, tere gusse ko handle karna, tujhe manana, tere nakhre uthana 😭🎀 Han humne kalesh bhi kiye, misunderstandings bhi hui, maine overthink bhi kiya aur kabhi kabhi tujhe hurt bhi kar diya 😭🥺. Uske liye I'm genuinely sorry yrr But ek cheez kabhi change nahi hui mera pyaar aur respect tere liye. Har fight ke baad mujhe sirf ek hi dar lagta hai ki kahin tu mujhse dur na ho jaye 🥺🫂.Aur aaj jab 2026 ke first 5 months khatam ho rahe hai, mujhe bas itna lag raha hai ki ye months meri life ke best months the kyuki tu mere saath thi 🥹❤️. Thank you for every hug, every smile, every memory, every effort and every moment jo tune mere saath spend kiya.
+
+Bas promise kar na Malkin 🥹🫂 ki hum aise hi memories banate rahenge, ek dusre ka saath dete rahenge aur ek din ye 5 months dekh ke hasenge jab ye 5 years, 10 years aur phir 50 years ban jayenge 🥺❤️🧿.
+
+I really really loveeeeeeeeeee youuuuuuuuuu sooooooooooooo muchhhhhh meraa pyaraa bachaaa 🥹🫂💋🎀🧿</div>
+      <div class="letter-footer">
+        <div>❤️ Forever Yours ❤️</div>
+        <div class="name">Vinay</div>
       </div>
     </div>
-  </body>
+  </div>
+</div>
 
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
-  <script type="text/babel" src="script/main.js"></script>
+<script>
+  let opened = false;
+  const hearts = ['❤️','🩷','💕','💖','💗','💓','💝','💞'];
+  const pinks = ['#ff4d88','#ff80aa','#ff99bb','#ffaac4','#ff6699','#ff3377','#ff66a3','#cc3366'];
+
+  function spawnSparkle() {
+    const el = document.createElement('div');
+    el.className = 'sparkle';
+    el.style.left = Math.random() * 100 + '%';
+    el.style.top = Math.random() * 100 + '%';
+    el.style.animationDuration = (2 + Math.random() * 3) + 's';
+    el.style.animationDelay = Math.random() * 2 + 's';
+    el.style.fontSize = (8 + Math.random() * 10) + 'px';
+    const colors = ['#ff80aa','#ff4488','#ffaac4','#ff99bb','#ffcc00'];
+    el.style.color = colors[Math.floor(Math.random() * colors.length)];
+    document.getElementById('sparkle-container').appendChild(el);
+    setTimeout(() => el.remove(), 6000);
+  }
+
+  setInterval(spawnSparkle, 300);
+
+  function openEnvelope() {
+    if (opened) return;
+    opened = true;
+
+    const wrap = document.getElementById('envelope-wrap');
+    wrap.classList.add('clicking');
+    wrap.style.cursor = 'default';
+
+    document.getElementById('envFlap').classList.add('open');
+
+    setTimeout(() => {
+      wrap.style.transition = 'opacity 0.8s, transform 0.8s';
+      wrap.style.opacity = '0';
+      wrap.style.transform = 'scale(0.3) translateY(-60px)';
+    }, 800);
+
+    setTimeout(() => {
+      wrap.style.display = 'none';
+      showHeartbeat();
+    }, 1600);
+  }
+
+  function showHeartbeat() {
+    const hb = document.getElementById('heartbeat-screen');
+    hb.classList.add('active');
+    setTimeout(() => {
+      hb.style.transition = 'opacity 0.6s';
+      hb.style.opacity = '0';
+      setTimeout(() => {
+        hb.style.display = 'none';
+        burstHearts();
+      }, 600);
+    }, 2000);
+  }
+
+  function burstHearts() {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    for (let i = 0; i < 120; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'burst-heart';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 80 + Math.random() * Math.max(window.innerWidth, window.innerHeight) * 0.7;
+        const tx = Math.cos(angle) * dist;
+        const ty = Math.sin(angle) * dist;
+        const sz = 12 + Math.random() * 28;
+        const dur = 0.8 + Math.random() * 1.2;
+        el.style.cssText = `left:${cx}px;top:${cy}px;font-size:${sz}px;animation-duration:${dur}s;`;
+        el.style.setProperty('--tx', tx + 'px');
+        el.style.setProperty('--ty', ty + 'px');
+        el.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+        el.style.animationName = 'none';
+        document.body.appendChild(el);
+
+        el.animate([
+          { transform: 'translate(0,0) scale(1)', opacity: 1 },
+          { transform: `translate(${tx}px,${ty}px) scale(0.7)`, opacity: 0 }
+        ], { duration: dur * 1000, easing: 'cubic-bezier(0.25,0.46,0.45,0.94)', fill: 'forwards' }).onfinish = () => el.remove();
+      }, i * 8);
+    }
+
+    setTimeout(() => {
+      document.getElementById('scene').classList.add('opened');
+      startFloatingHearts();
+      showLetter();
+    }, 1200);
+  }
+
+  function startFloatingHearts() {
+    function spawn() {
+      const el = document.createElement('div');
+      el.className = 'floating-heart';
+      const sz = 12 + Math.random() * 26;
+      const dur = 6 + Math.random() * 10;
+      const delay = Math.random() * 2;
+      el.style.cssText = `left:${Math.random()*100}vw;top:${90+Math.random()*20}vh;font-size:${sz}px;animation-duration:${dur}s;animation-delay:${delay}s;opacity:0;`;
+      el.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), (dur + delay + 0.5) * 1000);
+    }
+    for (let i = 0; i < 30; i++) setTimeout(spawn, i * 100);
+    setInterval(spawn, 400);
+  }
+
+  function showLetter() {
+    const ls = document.getElementById('letter-section');
+    ls.classList.add('show');
+    ls.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
 </html>
