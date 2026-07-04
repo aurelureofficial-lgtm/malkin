@@ -3,23 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>For My Malkin ❤️</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
+    <title>The Sky Remembered</title>
     <style>
       :root {
-        --blush: #f9d0d8;
-        --rose: #e8a0b0;
-        --deep-rose: #c96b8a;
-        --rose-gold: #b5737f;
-        --soft-pink: #fce4ec;
-        --glass: rgba(255, 255, 255, 0.15);
-        --glass-border: rgba(255, 255, 255, 0.3);
-        --text-dark: #5a2d3a;
-        --text-mid: #8b4a5c;
-        --gold: #d4a8b5;
+        --void: #03060f;
+        --midnight-1: #050a1a;
+        --midnight-2: #0a1330;
+        --midnight-3: #121c42;
+        --star: #f5f2e8;
+        --star-dim: #b9c2e0;
+        --gold: #d8b978;
+        --gold-soft: #e8d9ad;
+        --ink: #cdd3ea;
+        --ink-dim: #828cb3;
+        --line: rgba(216, 185, 120, 0.22);
+        --glass: rgba(18, 24, 54, 0.45);
+        --glass-border: rgba(216, 185, 120, 0.16);
+
+        --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+        --font-body: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
       }
 
       * {
@@ -27,2164 +29,1748 @@
         padding: 0;
         box-sizing: border-box;
       }
-
       html {
         scroll-behavior: smooth;
       }
-
       body {
-        font-family: "Montserrat", sans-serif;
-        background: #fce4ec;
+        background: var(--void);
+        color: var(--ink);
+        font-family: var(--font-body);
         overflow-x: hidden;
-        cursor: default;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* ===== CANVAS BG ===== */
-      #bg-canvas {
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      ::selection {
+        background: var(--gold);
+        color: var(--void);
+      }
+
+      a,
+      button {
+        font-family: inherit;
+      }
+      :focus-visible {
+        outline: 1px solid var(--gold-soft);
+        outline-offset: 4px;
+      }
+
+      /* ---------- Global star canvas (fixed backdrop) ---------- */
+      #sky-canvas {
         position: fixed;
-        top: 0;
-        left: 0;
+        inset: 0;
         width: 100%;
         height: 100%;
         z-index: 0;
-        pointer-events: none;
+        background: radial-gradient(
+          ellipse at 50% -10%,
+          var(--midnight-3) 0%,
+          var(--midnight-2) 35%,
+          var(--midnight-1) 65%,
+          var(--void) 100%
+        );
       }
 
-      /* ===== FLOATING HEARTS ===== */
-      .float-heart {
-        position: fixed;
-        font-size: 1.2rem;
-        animation: floatUp linear infinite;
-        pointer-events: none;
-        z-index: 1;
-        opacity: 0;
-      }
-
-      @keyframes floatUp {
-        0% {
-          transform: translateY(110vh) rotate(0deg);
-          opacity: 0;
-        }
-        10% {
-          opacity: 0.6;
-        }
-        90% {
-          opacity: 0.4;
-        }
-        100% {
-          transform: translateY(-10vh) rotate(360deg);
-          opacity: 0;
-        }
-      }
-
-      /* ===== SECTIONS ===== */
-      section {
+      .content {
         position: relative;
-        z-index: 10;
-        min-height: 100vh;
+        z-index: 2;
       }
 
-      /* ===== HERO ===== */
-      #hero {
+      /* ---------- Typography ---------- */
+      .eyebrow {
+        font-family: var(--font-body);
+        text-transform: uppercase;
+        letter-spacing: 0.35em;
+        font-size: 0.68rem;
+        color: var(--gold);
+        opacity: 0.85;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: var(--font-display);
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        color: var(--star);
+      }
+      .quote {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: 400;
+        color: var(--gold-soft);
+        line-height: 1.5;
+      }
+
+      /* ============================================================
+     LANDING
+     ============================================================ */
+      #landing {
+        height: 100vh;
+        height: 100svh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
+        position: relative;
         padding: 2rem;
-        min-height: 100vh;
       }
 
-      .hero-badge {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 50px;
-        padding: 0.4rem 1.4rem;
-        font-size: 0.75rem;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--deep-rose);
-        margin-bottom: 2rem;
-        animation: fadeInDown 1s ease forwards;
+      #ignition {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 5;
+        pointer-events: none;
       }
 
-      .hero-title {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(2.5rem, 8vw, 6rem);
-        font-weight: 700;
-        color: var(--text-dark);
-        line-height: 1.1;
-        margin-bottom: 1.5rem;
-        animation: fadeInUp 1.2s ease forwards;
-        text-shadow: 0 2px 30px rgba(201, 107, 138, 0.2);
+      .landing-lines {
+        max-width: 640px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
       }
-
-      .hero-title span {
-        color: var(--deep-rose);
-        font-style: italic;
-      }
-
-      .hero-sub {
-        font-family: "Cormorant Garamond", serif;
-        font-size: clamp(1rem, 3vw, 1.5rem);
-        color: var(--text-mid);
-        line-height: 1.8;
-        margin-bottom: 3rem;
-        animation: fadeInUp 1.4s ease forwards;
+      .landing-line {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.4rem, 4vw, 2.3rem);
+        color: var(--star-dim);
         opacity: 0;
-        animation-fill-mode: forwards;
-        animation-delay: 0.3s;
-      }
-
-      .hero-btn {
-        display: inline-block;
-        background: linear-gradient(135deg, #e8a0b0, #c96b8a);
-        color: white;
-        font-family: "Montserrat", sans-serif;
-        font-size: 0.9rem;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        padding: 1rem 2.5rem;
-        border-radius: 50px;
-        border: none;
-        cursor: pointer;
-        box-shadow:
-          0 10px 40px rgba(201, 107, 138, 0.4),
-          0 2px 8px rgba(0, 0, 0, 0.1);
-        animation: fadeInUp 1.6s ease forwards;
-        opacity: 0;
-        animation-fill-mode: forwards;
-        animation-delay: 0.6s;
+        transform: translateY(14px);
         transition:
-          transform 0.3s,
-          box-shadow 0.3s;
-        text-decoration: none;
+          opacity 2.2s ease,
+          transform 2.2s ease;
+      }
+      .landing-line.final {
+        color: var(--gold-soft);
+      }
+      .landing-line.visible {
+        opacity: 1;
+        transform: translateY(0);
       }
 
-      .hero-btn:hover {
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 20px 60px rgba(201, 107, 138, 0.5);
+      .begin-btn {
+        margin-top: 3.5rem;
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--gold-soft);
+        padding: 1.1rem 2.6rem;
+        font-family: var(--font-body);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        border-radius: 2px;
+        cursor: pointer;
+        opacity: 0;
+        transition:
+          opacity 1.8s ease 0.4s,
+          background 0.5s ease,
+          box-shadow 0.5s ease,
+          border-color 0.5s ease;
+      }
+      .begin-btn.visible {
+        opacity: 1;
+      }
+      .begin-btn:hover {
+        background: rgba(216, 185, 120, 0.08);
+        border-color: var(--gold);
+        box-shadow: 0 0 30px rgba(216, 185, 120, 0.18);
       }
 
       .scroll-hint {
         position: absolute;
-        bottom: 2rem;
+        bottom: 2.2rem;
         left: 50%;
         transform: translateX(-50%);
-        animation: bounce 2s infinite;
-        color: var(--rose-gold);
-        font-size: 1.5rem;
-        opacity: 0.6;
+        font-size: 0.65rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+        opacity: 0;
+        animation:
+          hintFade 1s ease 4s forwards,
+          driftDown 2.4s ease-in-out infinite;
       }
-
-      @keyframes bounce {
+      @keyframes hintFade {
+        to {
+          opacity: 0.6;
+        }
+      }
+      @keyframes driftDown {
         0%,
         100% {
-          transform: translateX(-50%) translateY(0);
+          transform: translate(-50%, 0);
         }
         50% {
-          transform: translateX(-50%) translateY(10px);
+          transform: translate(-50%, 6px);
         }
       }
 
-      @keyframes fadeInDown {
-        from {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      /* ============================================================
+     SECTION SHELL
+     ============================================================ */
+      .memory-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7rem 1.5rem;
+        position: relative;
       }
 
-      /* ===== SECTION HEADER ===== */
-      .section-header {
+      .memory-inner {
+        max-width: 760px;
+        width: 100%;
         text-align: center;
-        padding: 5rem 2rem 3rem;
-      }
-
-      .section-tag {
-        display: inline-block;
-        font-size: 0.7rem;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        color: var(--deep-rose);
-        margin-bottom: 1rem;
-        opacity: 0.8;
-      }
-
-      .section-title {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(2rem, 5vw, 3.5rem);
-        color: var(--text-dark);
-        margin-bottom: 1rem;
-        line-height: 1.2;
-      }
-
-      .section-sub {
-        font-family: "Cormorant Garamond", serif;
-        font-size: clamp(1rem, 2.5vw, 1.3rem);
-        color: var(--text-mid);
-        font-style: italic;
-        line-height: 1.7;
-        max-width: 600px;
-        margin: 0 auto;
-      }
-
-      /* ===== GLASS CARD ===== */
-      .glass {
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        border-radius: 24px;
-        box-shadow:
-          0 8px 40px rgba(201, 107, 138, 0.15),
-          inset 0 1px 0 rgba(255, 255, 255, 0.6);
-      }
-
-      /* ===== SECTION 2: GARDEN ===== */
-      #garden {
-        padding-bottom: 5rem;
-      }
-
-      .flower-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-        padding: 0 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      .flower-card {
-        glass: var(--glass);
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        border-radius: 24px;
-        box-shadow: 0 8px 40px rgba(201, 107, 138, 0.15);
-        padding: 2rem;
-        cursor: pointer;
-        transition:
-          transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-          box-shadow 0.4s;
         display: flex;
         flex-direction: column;
         align-items: center;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
+        gap: 2.2rem;
       }
 
-      .flower-card::before {
-        content: "";
+      .memory-inner .eyebrow {
+        margin-bottom: -1rem;
+      }
+
+      .memory-title {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+      }
+
+      /* ---------- Star map ---------- */
+      .starmap-wrap {
+        width: min(78vw, 380px);
+        aspect-ratio: 1/1;
+        position: relative;
+        margin: 0.5rem 0;
+      }
+      .starmap-ring {
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(255, 220, 230, 0.3),
-          rgba(255, 255, 255, 0.1)
-        );
-        opacity: 0;
-        transition: opacity 0.4s;
-        border-radius: 24px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
       }
-
-      .flower-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 20px 60px rgba(201, 107, 138, 0.3);
+      .starmap-ring.inner {
+        inset: 14%;
+        border-color: rgba(216, 185, 120, 0.12);
       }
-      .flower-card:hover::before {
-        opacity: 1;
-      }
-      .flower-card.opened {
-        border-color: rgba(201, 107, 138, 0.5);
-        box-shadow: 0 0 40px rgba(201, 107, 138, 0.3);
-      }
-
-      .flower-emoji {
-        font-size: 4rem;
-        margin-bottom: 0.5rem;
-        display: block;
-        transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        filter: drop-shadow(0 4px 10px rgba(201, 107, 138, 0.3));
-      }
-
-      .flower-card.opened .flower-emoji {
-        transform: scale(1.3) rotate(10deg);
-      }
-
-      .flower-name {
-        font-family: "Playfair Display", serif;
-        font-size: 1.3rem;
-        color: var(--text-dark);
-        margin-bottom: 0.3rem;
-      }
-
-      .flower-quote {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 0.95rem;
-        color: var(--text-mid);
-        font-style: italic;
-        line-height: 1.7;
-        display: none;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(201, 107, 138, 0.2);
-      }
-
-      .flower-card.opened .flower-quote {
-        display: block;
-        animation: fadeIn 0.5s ease;
-      }
-
-      .petal-burst {
+      .starmap-disc {
         position: absolute;
-        pointer-events: none;
-        font-size: 1.2rem;
-        animation: burstPetal 1s ease-out forwards;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 50% 40%,
+          rgba(20, 28, 60, 0.9),
+          rgba(4, 7, 16, 0.95)
+        );
+        overflow: hidden;
+        box-shadow:
+          0 0 0 1px rgba(216, 185, 120, 0.1),
+          0 0 60px rgba(80, 90, 160, 0.15),
+          inset 0 0 60px rgba(0, 0, 0, 0.6);
       }
-
-      @keyframes burstPetal {
-        0% {
-          transform: translate(0, 0) scale(0);
+      .starmap-disc svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .starmap-disc .map-star {
+        animation: mapTwinkle 3.5s ease-in-out infinite;
+      }
+      @keyframes mapTwinkle {
+        0%,
+        100% {
+          opacity: 0.35;
+        }
+        50% {
           opacity: 1;
         }
-        100% {
-          transform: translate(var(--tx), var(--ty)) scale(1.5);
-          opacity: 0;
-        }
+      }
+      .starmap-disc .constellation-line {
+        stroke: var(--gold);
+        stroke-width: 0.4;
+        opacity: 0.35;
+      }
+      .starmap-caption {
+        position: absolute;
+        bottom: -2.2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.62rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+        white-space: nowrap;
       }
 
-      /* Garden finale */
-      #garden-finale {
-        max-width: 700px;
-        margin: 3rem auto;
-        padding: 3rem 2rem;
-        text-align: center;
-        display: none;
+      /* ---------- Detail rows ---------- */
+      .memory-details {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
+        gap: 1rem 2.5rem;
+        width: 100%;
+        max-width: 480px;
+        margin-top: 1rem;
+        padding-top: 1.8rem;
+        border-top: 1px solid var(--line);
       }
-
-      #garden-finale.visible {
+      .detail-item {
+        text-align: left;
+      }
+      .detail-item .label {
         display: block;
-        animation: fadeIn 1s ease;
+        font-size: 0.62rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--gold);
+        opacity: 0.75;
+        margin-bottom: 0.35rem;
+      }
+      .detail-item .value {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        color: var(--star-dim);
       }
 
-      .finale-line {
-        font-family: "Cormorant Garamond", serif;
-        font-size: clamp(1.1rem, 3vw, 1.5rem);
-        color: var(--text-mid);
-        font-style: italic;
-        line-height: 2;
+      .memory-quote {
+        font-size: clamp(1.15rem, 3vw, 1.55rem);
+        max-width: 560px;
+      }
+
+      /* ============================================================
+     REVEAL ON SCROLL
+     ============================================================ */
+      .reveal {
         opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 1.4s ease,
+          transform 1.4s ease;
+      }
+      .reveal.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal.delay-1 {
+        transition-delay: 0.15s;
+      }
+      .reveal.delay-2 {
+        transition-delay: 0.3s;
+      }
+      .reveal.delay-3 {
+        transition-delay: 0.45s;
       }
 
-      .finale-big {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        color: var(--text-dark);
-        margin: 1.5rem 0;
-        opacity: 0;
+      /* ============================================================
+     SECTION 3 — TIMELINE
+     ============================================================ */
+      #timeline-section .memory-inner {
+        max-width: 900px;
       }
 
-      .finale-heart {
-        font-size: 3rem;
-        display: block;
-        margin: 1rem auto;
-      }
-
-      /* ===== SECTION 3: TIMELINE ===== */
-      #timeline {
-        padding: 0 0 5rem;
-      }
-
-      .timeline-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 0 2rem;
+      .timeline-track {
         position: relative;
+        width: 100%;
+        padding: 3rem 0 1rem;
       }
-
-      .timeline-container::before {
-        content: "";
+      .timeline-line {
         position: absolute;
         left: 50%;
         top: 0;
         bottom: 0;
-        width: 2px;
+        width: 1px;
         background: linear-gradient(
           to bottom,
           transparent,
-          var(--rose),
-          var(--deep-rose),
-          var(--rose),
+          var(--line) 8%,
+          var(--line) 92%,
           transparent
         );
         transform: translateX(-50%);
       }
-
       .timeline-item {
         display: flex;
-        justify-content: flex-end;
-        padding-right: calc(50% + 2rem);
-        margin-bottom: 3rem;
-        opacity: 0;
-        transform: translateX(-40px);
-        transition:
-          opacity 0.6s ease,
-          transform 0.6s ease;
+        justify-content: center;
+        position: relative;
+        padding: 1.6rem 0;
       }
-
-      .timeline-item:nth-child(even) {
-        justify-content: flex-start;
-        padding-right: 0;
-        padding-left: calc(50% + 2rem);
-        transform: translateX(40px);
+      .timeline-item .node-wrap {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        width: 100%;
+        max-width: 480px;
       }
-
-      .timeline-item.visible {
-        opacity: 1;
-        transform: translateX(0);
+      .timeline-item:nth-child(even) .node-wrap {
+        flex-direction: row-reverse;
+        text-align: right;
       }
-
-      .timeline-dot {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 16px;
-        height: 16px;
-        background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+      .timeline-item .star-node {
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
-        border: 3px solid white;
-        box-shadow: 0 0 15px rgba(201, 107, 138, 0.5);
-        margin-top: 1.2rem;
-      }
-
-      .timeline-card {
-        background: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 20px;
-        padding: 1.5rem;
-        max-width: 320px;
-        box-shadow: 0 6px 30px rgba(201, 107, 138, 0.15);
+        background: var(--ink-dim);
+        box-shadow: 0 0 0 4px rgba(216, 185, 120, 0.05);
+        flex-shrink: 0;
+        transition:
+          background 1s ease,
+          box-shadow 1s ease,
+          transform 1s ease;
         position: relative;
       }
-
-      .timeline-date {
-        font-size: 0.7rem;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--deep-rose);
-        font-weight: 500;
-        margin-bottom: 0.5rem;
+      .timeline-item.lit .star-node {
+        background: var(--gold-soft);
+        box-shadow:
+          0 0 16px 4px rgba(216, 185, 120, 0.5),
+          0 0 0 4px rgba(216, 185, 120, 0.1);
+        transform: scale(1.3);
+      }
+      .timeline-item .month-label {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        color: var(--ink-dim);
+        transition: color 1s ease;
+        flex: 1;
+      }
+      .timeline-item.lit .month-label {
+        color: var(--gold-soft);
       }
 
-      .timeline-memory {
-        font-family: "Cormorant Garamond", serif;
+      /* ============================================================
+     EASTER EGG STARS
+     ============================================================ */
+      .egg-star {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: transparent;
+        cursor: pointer;
+        z-index: 3;
+        border: none;
+        padding: 0;
+      }
+      .egg-star::before {
+        content: "";
+        position: absolute;
+        inset: 4px;
+        border-radius: 50%;
+        background: var(--star);
+        box-shadow: 0 0 6px 2px rgba(245, 242, 232, 0.6);
+        animation: mapTwinkle 2.8s ease-in-out infinite;
+      }
+      .egg-message {
+        position: fixed;
+        z-index: 20;
+        font-family: var(--font-display);
+        font-style: italic;
         font-size: 1.1rem;
-        color: var(--text-dark);
-        line-height: 1.6;
+        color: var(--gold-soft);
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(6px);
+        padding: 0.7rem 1.3rem;
+        border-radius: 4px;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(8px);
+        animation: eggFloat 3.2s ease forwards;
+        white-space: nowrap;
+      }
+      @keyframes eggFloat {
+        0% {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        12% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        82% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-18px);
+        }
+      }
+      .moon-phase-disc {
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin: auto;
       }
 
-      .timeline-emojis {
-        font-size: 1.3rem;
-        margin-top: 0.5rem;
+      .moon-image {
+        width: 75%;
+        height: 75%;
+        object-fit: contain;
+        filter: drop-shadow(0 0 35px rgba(255, 255, 220, 0.35));
       }
-
-      /* ===== SECTION 4: OPEN WHEN ===== */
-      #open-when {
-        padding: 0 0 5rem;
-      }
-
-      .open-when-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.5rem;
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 0 2rem;
-      }
-
-      .ow-card {
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 24px;
-        padding: 2.5rem 1.5rem;
+      /* ============================================================
+     FINAL SCENE
+     ============================================================ */
+      #final-scene {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
+        padding: 6rem 1.5rem;
+        position: relative;
+        gap: 3rem;
+      }
+      .heart-canvas-wrap {
+        width: min(85vw, 460px);
+        aspect-ratio: 1/1;
+        position: relative;
+      }
+      .heart-canvas-wrap svg {
+        width: 100%;
+        height: 100%;
+      }
+      .heart-point {
+        fill: var(--gold-soft);
+        opacity: 0;
+        transition:
+          opacity 2s ease,
+          r 2s ease;
+      }
+      .heart-point.lit {
+        opacity: 0.9;
+      }
+      .heart-line {
+        stroke: var(--gold);
+        stroke-width: 0.5;
+        opacity: 0;
+        transition: opacity 2.4s ease;
+      }
+      .heart-line.lit {
+        opacity: 0.25;
+      }
+
+      .final-quote {
+        font-size: clamp(1.3rem, 3.4vw, 1.9rem);
+        max-width: 600px;
+      }
+
+      .final-quote-2 {
+        font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+        max-width: 520px;
+        color: var(--ink-dim);
+        font-family: var(--font-display);
+        font-style: italic;
+      }
+
+      .last-thing-btn {
+        margin-top: 1rem;
+        background: transparent;
+        border: 1px solid var(--gold);
+        color: var(--gold-soft);
+        padding: 1.2rem 2.8rem;
+        font-family: var(--font-body);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        border-radius: 2px;
         cursor: pointer;
         transition:
-          transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-          box-shadow 0.4s;
-        box-shadow: 0 6px 30px rgba(201, 107, 138, 0.1);
+          background 0.5s ease,
+          box-shadow 0.5s ease;
+      }
+      .last-thing-btn:hover {
+        background: rgba(216, 185, 120, 0.1);
+        box-shadow: 0 0 34px rgba(216, 185, 120, 0.25);
       }
 
-      .ow-card:hover {
-        transform: translateY(-8px) scale(1.03);
-        box-shadow: 0 20px 60px rgba(201, 107, 138, 0.3);
+      footer {
+        text-align: center;
+        padding: 3rem 1.5rem 4rem;
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+        opacity: 0.5;
       }
 
-      .ow-emoji {
-        font-size: 3rem;
-        display: block;
-        margin-bottom: 1rem;
-      }
-
-      .ow-title {
-        font-family: "Playfair Display", serif;
-        font-size: 1.1rem;
-        color: var(--text-dark);
-      }
-
-      /* Modal */
+      /* ============================================================
+     MODAL
+     ============================================================ */
       .modal-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(90, 45, 58, 0.4);
+        background: rgba(2, 4, 10, 0.85);
         backdrop-filter: blur(10px);
-        z-index: 1000;
-        display: none;
+        z-index: 30;
+        display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2rem;
+        padding: 1.5rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.6s ease;
       }
-
-      .modal-overlay.active {
-        display: flex;
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
       }
-
       .modal-box {
-        background: rgba(255, 240, 245, 0.95);
-        backdrop-filter: blur(30px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        border-radius: 30px;
-        padding: 3rem 2.5rem;
-        max-width: 550px;
+        max-width: 600px;
         width: 100%;
-        text-align: center;
+        max-height: 85vh;
+        overflow-y: auto;
+        background: linear-gradient(
+          180deg,
+          rgba(18, 24, 54, 0.9),
+          rgba(8, 12, 28, 0.94)
+        );
+        border: 1px solid var(--glass-border);
+        border-radius: 6px;
+        padding: 2.8rem 2.4rem;
         position: relative;
-        box-shadow: 0 30px 80px rgba(201, 107, 138, 0.3);
-        animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform: translateY(20px) scale(0.98);
+        transition: transform 0.6s ease;
       }
-
-      @keyframes modalIn {
-        from {
-          transform: scale(0.5) translateY(50px);
-          opacity: 0;
-        }
-        to {
-          transform: scale(1) translateY(0);
-          opacity: 1;
-        }
+      .modal-overlay.open .modal-box {
+        transform: translateY(0) scale(1);
       }
-
       .modal-close {
         position: absolute;
-        top: 1rem;
-        right: 1.5rem;
-        font-size: 1.5rem;
+        top: 1.2rem;
+        right: 1.4rem;
+        background: none;
+        border: none;
+        color: var(--ink-dim);
+        font-size: 1.4rem;
         cursor: pointer;
-        color: var(--rose-gold);
         line-height: 1;
-        transition: transform 0.3s;
       }
       .modal-close:hover {
-        transform: scale(1.2) rotate(90deg);
+        color: var(--gold-soft);
       }
-
       .modal-title {
-        font-family: "Playfair Display", serif;
-        font-size: 1.8rem;
-        color: var(--text-dark);
-        margin-bottom: 1.5rem;
-      }
-
-      .modal-body {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.15rem;
-        color: var(--text-mid);
-        line-height: 2;
-        font-style: italic;
-      }
-
-      /* ===== SECTION 5: 100 REASONS ===== */
-      #reasons {
-        padding: 0 0 5rem;
-      }
-
-      .reasons-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 1rem;
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0 2rem;
-      }
-
-      .reason-card {
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 16px;
-        padding: 1rem;
+        font-size: 1.7rem;
+        margin-bottom: 1.8rem;
         text-align: center;
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1rem;
-        color: var(--text-dark);
-        opacity: 0;
-        transform: scale(0.8);
-        transition:
-          opacity 0.5s,
-          transform 0.5s,
-          box-shadow 0.3s;
-        cursor: default;
-        line-height: 1.4;
       }
-
-      .reason-card:hover {
-        box-shadow: 0 8px 30px rgba(201, 107, 138, 0.25);
-        transform: scale(1.05) !important;
+      .modal-block {
+        margin-bottom: 1.8rem;
+        padding-bottom: 1.8rem;
+        border-bottom: 1px solid var(--line);
       }
-      .reason-card.visible {
-        opacity: 1;
-        transform: scale(1);
+      .modal-block:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
       }
-
-      .reason-num {
-        font-size: 0.7rem;
-        letter-spacing: 2px;
-        color: var(--deep-rose);
+      .modal-block .label {
         display: block;
-        margin-bottom: 0.3rem;
-      }
-
-      /* ===== SECTION 6: SCRATCH CARD ===== */
-      #scratch-section {
-        padding: 0 0 5rem;
-      }
-
-      .scratch-wrapper {
-        max-width: 500px;
-        margin: 0 auto;
-        padding: 0 2rem;
-        text-align: center;
-      }
-
-      .scratch-container {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 1.4;
-        border-radius: 24px;
-        overflow: hidden;
-        cursor: crosshair;
-        box-shadow: 0 20px 60px rgba(201, 107, 138, 0.3);
-        margin: 2rem auto;
-      }
-
-      #scratch-canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        touch-action: none;
-      }
-
-      .scratch-reveal {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-        padding: 2rem;
-        z-index: 1;
-      }
-
-      .scratch-reveal-item {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.2rem;
-        color: var(--text-dark);
-        margin: 0.3rem 0;
-        opacity: 0;
-        transition: opacity 0.5s;
-      }
-      .scratch-reveal-item.shown {
-        opacity: 1;
-      }
-
-      #scratch-final {
-        display: none;
-        margin-top: 2rem;
-        animation: fadeIn 1s ease;
-      }
-      #scratch-final.visible {
-        display: block;
-      }
-
-      .scratch-final-text {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.1rem;
-        color: var(--text-mid);
-        font-style: italic;
-        line-height: 2;
-        margin-bottom: 1rem;
-      }
-
-      .scratch-big {
-        font-family: "Playfair Display", serif;
-        font-size: 3rem;
-        color: var(--deep-rose);
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-      }
-
-      /* ===== SECTION 7: FUTURE ===== */
-      #future {
-        padding: 0 0 5rem;
-      }
-
-      .future-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 0 2rem;
-      }
-
-      .future-card {
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 24px;
-        padding: 2rem;
-        text-align: center;
-        box-shadow: 0 6px 30px rgba(201, 107, 138, 0.1);
-        transition:
-          transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-          box-shadow 0.4s;
-      }
-
-      .future-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 60px rgba(201, 107, 138, 0.25);
-      }
-
-      .future-milestone {
-        font-family: "Playfair Display", serif;
-        font-size: 2rem;
-        color: var(--text-dark);
-        margin-bottom: 0.5rem;
-      }
-
-      .future-status {
-        font-size: 0.8rem;
-        letter-spacing: 3px;
+        font-size: 0.62rem;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
-        padding: 0.3rem 1rem;
-        border-radius: 20px;
-        display: inline-block;
-        margin-bottom: 1rem;
+        color: var(--gold);
+        opacity: 0.8;
+        margin-bottom: 0.7rem;
       }
-
-      .status-done {
-        background: rgba(200, 230, 200, 0.5);
-        color: #4a7a4a;
+      .letter-text {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        line-height: 1.75;
+        color: var(--ink);
+        white-space: pre-line;
       }
-      .status-soon {
-        background: rgba(201, 107, 138, 0.15);
-        color: var(--deep-rose);
-      }
-
-      .future-text {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1rem;
-        color: var(--text-mid);
-        font-style: italic;
-        line-height: 1.7;
-      }
-
-      .future-ending {
-        text-align: center;
-        max-width: 600px;
-        margin: 4rem auto 0;
-        padding: 0 2rem;
-      }
-
-      .future-ending-text {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(1.8rem, 4vw, 3rem);
-        color: var(--text-dark);
-        line-height: 1.6;
-      }
-
-      /* ===== SECTION 8: LETTER ===== */
-      #letter-section {
-        padding: 0 0 8rem;
-      }
-
-      .letter-wrapper {
-        max-width: 550px;
-        margin: 0 auto;
-        padding: 0 2rem;
-        text-align: center;
-      }
-
-      .envelope-container {
-        position: relative;
-        cursor: pointer;
-        margin: 2rem auto;
-        width: min(380px, 100%);
-        perspective: 1000px;
-      }
-
-      .envelope {
+      .photo-frame {
         width: 100%;
-        background: linear-gradient(135deg, #f8a0b8, #e87898);
-        border-radius: 20px;
-        padding-top: 55%;
-        position: relative;
-        box-shadow: 0 20px 60px rgba(201, 107, 138, 0.4);
-        transition: transform 0.3s;
-      }
-
-      .envelope:hover {
-        transform: scale(1.02);
-      }
-
-      .envelope-flap {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 55%;
-        background: linear-gradient(135deg, #f9b0c0, #f08090);
-        border-radius: 20px 20px 0 0;
-        clip-path: polygon(0 0, 100% 0, 50% 100%);
-        transform-origin: top;
-        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 2;
-      }
-
-      .envelope.opened .envelope-flap {
-        transform: rotateX(-180deg);
-      }
-
-      .envelope-body {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 65%;
-        background: linear-gradient(to bottom, #f9c0d0, #f8a0b8);
-        border-radius: 0 0 20px 20px;
+        aspect-ratio: 4/3;
+        border: 1px dashed var(--glass-border);
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2.5rem;
-        z-index: 1;
+        color: var(--ink-dim);
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.02);
+      }
+      audio,
+      video {
+        width: 100%;
+        border-radius: 4px;
+        filter: sepia(0.1) saturate(0.8);
       }
 
-      .envelope-hint {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 0.95rem;
-        color: var(--text-mid);
-        font-style: italic;
-        margin-top: 1rem;
-      }
-
-      #letter-content {
-        display: none;
-        margin-top: 3rem;
-        animation: letterReveal 1s ease;
-      }
-      #letter-content.visible {
-        display: block;
-      }
-
-      @keyframes letterReveal {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .letter-paper {
-        background: rgba(255, 250, 252, 0.95);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 200, 220, 0.5);
-        border-radius: 20px;
-        padding: 3rem 2.5rem;
-        box-shadow: 0 20px 60px rgba(201, 107, 138, 0.2);
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.1rem;
-        color: var(--text-dark);
-        line-height: 2.2;
-        text-align: left;
-        font-style: italic;
-        position: relative;
-      }
-
-      .letter-paper::before {
-        content: "";
-        position: absolute;
-        left: 3rem;
-        top: 1rem;
-        bottom: 1rem;
-        width: 2px;
-        background: linear-gradient(
-          to bottom,
-          transparent,
-          rgba(201, 107, 138, 0.2),
-          transparent
-        );
-      }
-
-      .letter-sign {
-        font-family: "Playfair Display", serif;
-        font-size: 1.8rem;
-        color: var(--deep-rose);
-        text-align: right;
-        margin-top: 2rem;
-        font-style: italic;
-      }
-
-      /* ===== ANIMATIONS ===== */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      @keyframes sparkle {
-        0%,
-        100% {
-          opacity: 0;
-          transform: scale(0);
-        }
-        50% {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-
-      .sparkle {
-        position: fixed;
-        pointer-events: none;
-        animation: sparkle var(--dur, 1.5s) ease-in-out var(--delay, 0s)
-          infinite;
-        z-index: 2;
-        font-size: var(--size, 1rem);
-      }
-
-      /* ===== SCROLLBAR ===== */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #fce4ec;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: var(--rose);
-        border-radius: 3px;
-      }
-
-      /* ===== MOBILE ===== */
+      /* ============================================================
+     RESPONSIVE
+     ============================================================ */
       @media (max-width: 600px) {
-        .timeline-container::before {
-          left: 1rem;
+        .memory-section {
+          padding: 5rem 1.2rem;
+        }
+        .memory-details {
+          grid-template-columns: 1fr;
+          max-width: 280px;
+        }
+        .timeline-item .node-wrap,
+        .timeline-item:nth-child(even) .node-wrap {
+          flex-direction: row;
+          text-align: left;
+        }
+        .timeline-line {
+          left: 16px;
         }
         .timeline-item {
           justify-content: flex-start;
-          padding-right: 0;
-          padding-left: 3rem;
-          transform: translateX(-30px);
+          padding-left: 0;
         }
-        .timeline-item:nth-child(even) {
-          padding-left: 3rem;
+        .timeline-item .node-wrap {
+          max-width: none;
+          padding-left: 0;
         }
-        .timeline-dot {
-          left: 1rem;
-        }
-        .timeline-card {
-          max-width: 100%;
-        }
-        .letter-paper {
-          padding: 2rem 1.5rem;
-        }
-        .letter-paper::before {
-          left: 1.5rem;
-        }
-      }
-
-      /* Section dividers */
-      .divider {
-        text-align: center;
-        padding: 2rem;
-        font-size: 1.5rem;
-        opacity: 0.4;
-        letter-spacing: 1rem;
-      }
-
-      /* Progress bar */
-      #progress-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 3px;
-        background: linear-gradient(
-          to right,
-          var(--blush),
-          var(--deep-rose),
-          var(--rose-gold)
-        );
-        z-index: 9999;
-        transition: width 0.1s;
       }
     </style>
   </head>
   <body>
-    <!-- Progress Bar -->
-    <div id="progress-bar" style="width: 0%"></div>
+    <!-- Fixed living sky background -->
+    <canvas id="sky-canvas"></canvas>
+    <div id="ignition"></div>
 
-    <!-- Background Canvas -->
-    <canvas id="bg-canvas"></canvas>
-
-    <!-- Floating hearts injected by JS -->
-
-    <!-- ======================================= -->
-    <!-- SECTION 1: HERO -->
-    <!-- ======================================= -->
-    <section id="hero">
-      <div class="hero-badge">A Random Gift 🧿🎀</div>
-      <h1 class="hero-title">
-        For Someone Who<br /><span>Changed My Life</span> ❤️
-      </h1>
-      <p class="hero-sub">
-        This isn't just a website.<br />
-        It's a collection of memories.
-      </p>
-      <a href="#garden" class="hero-btn">Open My Heart 🎀</a>
-      <div class="scroll-hint">↓</div>
-    </section>
-
-    <!-- ======================================= -->
-    <!-- SECTION 2: GARDEN -->
-    <!-- ======================================= -->
-    <section id="garden">
-      <div class="section-header">
-        <div class="section-tag">Just A Thought 🌸</div>
-        <h2 class="section-title">If You Were A Garden</h2>
-        <p class="section-sub">
-          I tried finding a flower that felt like you.<br />
-          Turns out one wasn't enough.
-        </p>
-      </div>
-
-      <div class="flower-grid" id="flower-grid">
-        <div class="flower-card" data-flower="rose" onclick="openFlower(this)">
-          <span class="flower-emoji"
-            ><img src="/rose.png" height="80px" width="80px" alt=""
-          /></span>
-          <div class="flower-name">Rose</div>
-          <p
-            style="
-              font-size: 0.8rem;
-              color: var(--text-mid);
-              margin-top: 0.3rem;
-              font-family: &quot;Cormorant Garamond&quot;, serif;
-              font-style: italic;
-            "
-          >
-            Click to bloom
+    <div class="content">
+      <!-- ============================================================
+       LANDING
+       ============================================================ -->
+      <section id="landing">
+        <div class="landing-lines">
+          <p class="landing-line" data-line="1">
+            Every star has billions of stories.
           </p>
-          <div class="flower-quote">
-            "Beautiful enough to be noticed.,<br />Rare enough to be
-            remembered."
-          </div>
-        </div>
-
-        <div
-          class="flower-card"
-          data-flower="sunflower"
-          onclick="openFlower(this)"
-        >
-          <span class="flower-emoji"
-            ><img src="/sunflower.png" height="80px" width="80px" alt="" />
-          </span>
-          <div class="flower-name">Sunflower</div>
-          <p
-            style="
-              font-size: 0.8rem;
-              color: var(--text-mid);
-              margin-top: 0.3rem;
-              font-family: &quot;Cormorant Garamond&quot;, serif;
-              font-style: italic;
-            "
-          >
-            Click to bloom
+          <p class="landing-line" data-line="2">
+            But among all of them&hellip;
           </p>
-          <div class="flower-quote">
-            "Sunflowers follow sunlight.<br />Somehow my attention always finds
-            you the same way."
-          </div>
-        </div>
-
-        <div class="flower-card" data-flower="tulip" onclick="openFlower(this)">
-          <span class="flower-emoji"
-            ><img src="/tulip.png" height="80px" width="100%" alt=""
-          /></span>
-          <div class="flower-name">Tulip</div>
-          <p
-            style="
-              font-size: 0.8rem;
-              color: var(--text-mid);
-              margin-top: 0.3rem;
-              font-family: &quot;Cormorant Garamond&quot;, serif;
-              font-style: italic;
-            "
-          >
-            Click to bloom
-          </p>
-          <div class="flower-quote">
-            "You never try to be the center of attention.<br />Yet somehow you
-            become my favorite thing in every room."
-          </div>
-        </div>
-
-        <div class="flower-card" data-flower="daisy" onclick="openFlower(this)">
-          <span class="flower-emoji"
-            ><img src="/daisy.png" height="80px" width="100%" alt=""
-          /></span>
-          <div class="flower-name">Daisy</div>
-          <p
-            style="
-              font-size: 0.8rem;
-              color: var(--text-mid);
-              margin-top: 0.3rem;
-              font-family: &quot;Cormorant Garamond&quot;, serif;
-              font-style: italic;
-            "
-          >
-            Click to bloom
-          </p>
-          <div class="flower-quote">
-            "Some people make you smile.<br />You make mine ordinary days into
-            memories."
-          </div>
-        </div>
-
-        <div
-          class="flower-card"
-          data-flower="lavender"
-          onclick="openFlower(this)"
-        >
-          <span class="flower-emoji"
-            ><img src="/lavender.png" height="80px" width="80px" alt="" />
-          </span>
-          <div class="flower-name">Lavender</div>
-          <p
-            style="
-              font-size: 0.8rem;
-              color: var(--text-mid);
-              margin-top: 0.3rem;
-              font-family: &quot;Cormorant Garamond&quot;, serif;
-              font-style: italic;
-            "
-          >
-            Click to bloom
-          </p>
-          <div class="flower-quote">
-            "You don't just make me happy.<br />You make me feel at home."
-          </div>
-        </div>
-      </div>
-
-      <div
-        id="garden-finale"
-        class="glass"
-        style="padding: 3rem 2rem; border-radius: 30px; text-align: center"
-      >
-        <p class="finale-line" id="fl1">"I searched through roses."</p>
-        <p class="finale-line" id="fl2">"I searched through tulips."</p>
-        <p class="finale-line" id="fl3">"I searched through sunflowers."</p>
-        <p class="finale-line" id="fl4">
-          "I searched through every flower in the garden."
-        </p>
-        <br />
-        <p class="finale-line" id="fl5">
-          "But I still couldn't find one that describes you."
-        </p>
-        <p class="finale-line" id="fl6">
-          "Because flowers remind me of parts of you..."
-        </p>
-        <p class="finale-line" id="fl7">"But none of them are actually you."</p>
-        <br />
-        <span class="finale-heart" id="fl8" style="opacity: 0">🌸</span>
-        <p class="finale-big" id="fl9">
-          "My favorite flower was never in the garden."
-        </p>
-        <p class="finale-big" id="fl10" style="color: var(--deep-rose)">
-          "It was you."
-        </p>
-        <span class="finale-heart" id="fl11" style="opacity: 0">❤️</span>
-      </div>
-    </section>
-
-    <div class="divider">· · · ❤️ · · ·</div>
-
-    <!-- ======================================= -->
-    <!-- SECTION 3: TIMELINE -->
-    <!-- ======================================= -->
-    <section id="timeline">
-      <div class="section-header">
-        <div class="section-tag">📖 Our Journey</div>
-        <h2 class="section-title">Our Story ❤️</h2>
-        <p class="section-sub">Every moment written in my heart.</p>
-      </div>
-
-      <div class="timeline-container">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">15 February 2025</div>
-            <div class="timeline-memory">
-              The first conversation that changed my life 🥹
-            </div>
-            <div class="timeline-emojis">💬✨</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">Bracelet Day</div>
-            <div class="timeline-memory">
-              I don't remember the date, but I remember the moment. I remember
-              that it was the day I fell in love.
-            </div>
-            <div class="timeline-emojis">📿💞</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">22 December 2025</div>
-            <div class="timeline-memory">"The day you chose me."</div>
-            <div class="timeline-emojis">💑❤️</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">14 January 2026</div>
-            <div class="timeline-memory">"Our first hug."</div>
-            <div class="timeline-emojis">🫂💗</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">20 January 2026</div>
-            <div class="timeline-memory">
-              "One of my favorite memories. the day you kissed me 🫠🎀 just
-              before your birthday!"
-            </div>
-            <div class="timeline-emojis">🌟💖</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">21 January 2026 · Birthday</div>
-            <div class="timeline-memory">A perfect day together.</div>
-            <div class="timeline-emojis">💐</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">7 march . Rose Day</div>
-            <div class="timeline-memory">
-              A white rose. A perfect day. iykyk🥹
-            </div>
-            <div class="timeline-emojis">🌹🫂</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">3 Months ❤️</div>
-            <div class="timeline-memory">
-              "Three months of choosing each other, every single day. or the day
-              when you kissed me on lips for the first time this is my favorite
-              memory."
-            </div>
-            <div class="timeline-emojis">🥂💕</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-card">
-            <div class="timeline-date">22nd of every month</div>
-            <div class="timeline-memory">
-              Every 22nd reminds me how lucky I am. Another month of memories,
-              laughter, and moments with you.
-            </div>
-            <div class="timeline-emojis">🌱💞</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider">· · · 💌 · · ·</div>
-
-    <!-- ======================================= -->
-    <!-- SECTION 5: 100 REASONS -->
-    <!-- ======================================= -->
-    <section id="reasons">
-      <div class="section-header">
-        <div class="section-tag">💝 Because Of You</div>
-        <h2 class="section-title">111 Reasons I Love You ❤️</h2>
-        <p class="section-sub">I started counting and couldn't stop.</p>
-      </div>
-
-      <div class="reasons-grid" id="reasons-grid"></div>
-    </section>
-
-    <div class="divider">· · · ✨ · · ·</div>
-
-    <!-- ======================================= -->
-    <!-- SECTION 6: SCRATCH CARD -->
-    <!-- ======================================= -->
-    <section id="scratch-section">
-      <div class="section-header">
-        <div class="section-tag">🎴 A Secret</div>
-        <h2 class="section-title">Scratch to Reveal ❤️</h2>
-        <p class="section-sub">What does Vinay love most about you?</p>
-      </div>
-
-      <div class="scratch-wrapper">
-        <div class="scratch-container" id="scratch-container">
-          <canvas id="scratch-canvas"></canvas>
-          <div class="scratch-reveal" id="scratch-reveal">
-            <div class="scratch-reveal-item" id="sr1">❤️ Your smile</div>
-            <div class="scratch-reveal-item" id="sr2">❤️ Your eyes</div>
-            <div class="scratch-reveal-item" id="sr3">❤️ Your laugh</div>
-            <div class="scratch-reveal-item" id="sr4">❤️ Your voice</div>
-            <div class="scratch-reveal-item" id="sr5">❤️ Your hugs</div>
-          </div>
-        </div>
-
-        <div id="scratch-final">
-          <p class="scratch-final-text">"I tried choosing one thing."</p>
-          <p class="scratch-final-text">
-            "But every choice reminded me of another reason."
-          </p>
-          <div class="scratch-big">🧿🥹YOU🎀</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider">· · · 🌙 · · ·</div>
-
-    <!-- ======================================= -->
-    <!-- SECTION 7: FUTURE -->
-    <!-- ======================================= -->
-    <section id="future">
-      <div class="section-header">
-        <div class="section-tag">🌙 Looking Forward</div>
-        <h2 class="section-title">Our Future 🌙</h2>
-        <p class="section-sub">A roadmap written in love.</p>
-      </div>
-
-      <div class="future-grid">
-        <div class="future-card">
-          <div class="future-milestone">6 Months</div>
-          <span class="future-status status-done">✅ Achieved</span>
-          <p class="future-text">"We made it here. And it only gets better."</p>
-        </div>
-
-        <div class="future-card">
-          <div class="future-milestone">1 Year</div>
-          <span class="future-status status-soon">⏳ Coming Soon</span>
-          <p class="future-text">"365 days of choosing you. I can't wait."</p>
-        </div>
-
-        <div class="future-card">
-          <div class="future-milestone">5 Years</div>
-          <span class="future-status status-soon">⏳ Our Dream</span>
-          <p class="future-text">"Five years deeper. Still falling for you."</p>
-        </div>
-
-        <div class="future-card">
-          <div class="future-milestone">10 Years</div>
-          <span class="future-status status-soon">⏳ Our Story</span>
-          <p class="future-text">"A decade of memories, laughter, and love."</p>
-        </div>
-
-        <div
-          class="future-card"
-          style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto"
-        >
-          <div class="future-milestone">50 Years</div>
-          <span class="future-status status-soon">⏳ Forever</span>
-          <p class="future-text">
-            "Still holding your hand. Still choosing you."
+          <p class="landing-line final" data-line="3">
+            These became my favorite.
           </p>
         </div>
-      </div>
+        <button class="begin-btn" id="beginBtn">Begin the Journey</button>
+        <div class="scroll-hint">Scroll to remember</div>
+      </section>
 
-      <div class="future-ending">
-        <div class="future-ending-text">
-          "I'd choose you again."<br />
-          "And again."<br />
-          "And again."
-        </div>
-      </div>
-    </section>
-
-    <div class="divider">· · · 💌 · · ·</div>
-
-    <!-- ======================================= -->
-    <!-- SECTION 8: FINAL LETTER -->
-    <!-- ======================================= -->
-    <section id="letter-section">
-      <div class="section-header">
-        <div class="section-tag">💌 For You</div>
-        <h2 class="section-title">A Letter From My Heart</h2>
-        <p class="section-sub">Click the envelope to read.</p>
-      </div>
-
-      <div class="letter-wrapper">
-        <div class="envelope-container" onclick="openEnvelope()">
-          <div class="envelope" id="the-envelope">
-            <div class="envelope-flap"></div>
-            <div class="envelope-body">
-              <span>❤️</span>
+      <!-- SECTION 1 -->
+      <section class="memory-section" id="instagram-section">
+        <div class="memory-inner">
+          <span class="eyebrow reveal">Chapter One</span>
+          <h2 class="memory-title reveal delay-1">Our First Conversation</h2>
+          <div class="starmap-wrap reveal delay-2">
+            <div class="starmap-ring"></div>
+            <div class="starmap-ring inner"></div>
+            <div class="starmap-disc" id="mapConversation"></div>
+            <span class="starmap-caption"
+              >the sky when our story quietly began</span
+            >
+          </div>
+          <div class="memory-details reveal delay-2">
+            <div class="detail-item">
+              <span class="label">Date</span
+              ><span class="value">15 February 2025</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Location</span
+              ><span class="value">Instagram</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Moon Phase</span
+              ><span class="value">Waning Gibbous</span>
+            </div>
+            <div class="detail-item" style="grid-column: 1/-1">
+              <span class="label">What the Sky Witnessed</span>
+              <span class="value">Two hearts quietly choosing each other.</span>
             </div>
           </div>
+          <p class="quote memory-quote reveal delay-3">
+            A simple "Story like" quietly became the beginning of my favorite
+            story.
+          </p>
         </div>
-        <p class="envelope-hint">✉️ Click to open your letter</p>
+      </section>
 
-        <div id="letter-content">
-          <div class="letter-paper">
-            <p>
-              <b
-                >Malkin 👑, Falani Ji 🥹,Devi ji 🫂🥹😭, Mera Pyara Baccha 🎀,
-                My Favorite Feeling ❤️, My Peace 💜, and Best Part Of My Day ☀️.
-                😭❤️🎀</b
+      <!-- SECTION 2 -->
+      <section class="memory-section" id="relationship-section">
+        <div class="memory-inner">
+          <span class="eyebrow reveal">Chapter Two</span>
+          <h2 class="memory-title reveal delay-1">Relationship Started</h2>
+          <div class="starmap-wrap reveal delay-2">
+            <div class="starmap-ring"></div>
+            <div class="starmap-ring inner"></div>
+            <div class="starmap-disc" id="mapRelationship"></div>
+            <span class="starmap-caption">the sky when we became us</span>
+          </div>
+          <div class="memory-details reveal delay-2">
+            <div class="detail-item">
+              <span class="label">Date</span
+              ><span class="value">22 December 2025</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Time</span
+              ><span class="value">Afternoon</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Moon Phase</span
+              ><span class="value">Waxing Crescent</span>
+            </div>
+            <div class="detail-item" style="grid-column: 1/-1">
+              <span class="label">Our Forever</span>
+              <span class="value">A memory the stars will never forget.</span>
+            </div>
+          </div>
+          <p class="quote memory-quote reveal delay-3">
+            The day our forever quietly began.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 3 -->
+      <section class="memory-section" id="hug-section">
+        <div class="memory-inner">
+          <span class="eyebrow reveal">Chapter Three</span>
+          <h2 class="memory-title reveal delay-1">Our First Hug</h2>
+          <div class="starmap-wrap reveal delay-2">
+            <div class="starmap-ring"></div>
+            <div class="starmap-ring inner"></div>
+            <div class="starmap-disc" id="mapHug"></div>
+            <span class="starmap-caption">the sky that embraced us</span>
+          </div>
+          <div class="memory-details reveal delay-2">
+            <div class="detail-item">
+              <span class="label">Date</span
+              ><span class="value">14 January 2026</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Time</span
+              ><span class="value">Afternoon</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Location</span
+              ><span class="value">Yashika ka ghar 👽</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Moon Phase</span
+              ><span class="value">Waning Crescent </span>
+            </div>
+            <div class="detail-item" style="grid-column: 1/-1">
+              <span class="label">My Favorite Place</span>
+              <span class="value">Right there, in your arms.</span>
+            </div>
+          </div>
+          <p class="quote memory-quote reveal delay-3">
+            Your arms became my favorite place.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 4 -->
+      <section class="memory-section" id="cheekkiss-section">
+        <div class="memory-inner">
+          <span class="eyebrow reveal">Chapter Four</span>
+          <h2 class="memory-title reveal delay-1">Our First Cheek Kiss</h2>
+          <div class="starmap-wrap reveal delay-2">
+            <div class="starmap-ring"></div>
+            <div class="starmap-ring inner"></div>
+            <div class="starmap-disc" id="mapCheekKiss"></div>
+            <span class="starmap-caption">the sky smiling above us</span>
+          </div>
+          <div class="memory-details reveal delay-2">
+            <div class="detail-item">
+              <span class="label">Date</span
+              ><span class="value">20 January 2026</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Time</span
+              ><span class="value">Afternoon</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Moon Phase</span
+              ><span class="value">Waxing Crescent</span>
+            </div>
+            <div class="detail-item" style="grid-column: 1/-1">
+              <span class="label">The Moment</span>
+              <span class="value"
+                >Our first kiss, forever written among the stars.</span
               >
-            </p>
-            <br />
-            <p>
-              Yrr pata nhi kyu but aaj dil kar raha hai ki jo bhi feel karta hu
-              vo sab likh du 😭🫂. Sach batau na, tu meri life ka vo person hai
-              jiske liye me raat bhar jag sakta hu aur fir bhi lage ki yrr thodi
-              der aur baat ho jaye 🥹❤️. Pata nhi kya jadu hai tere me, me kuch
-              bhi kar raha hu, kahi bhi hu, end me thoughts tere pe hi aake ruk
-              jate hai 😭🫠.
-            </p>
-            <br />
-            <p>
-              Kabhi kabhi random smile aa jati hai aur fir realize hota hai ki
-              reason tu hai 🥺❤️. Koi song sunu toh teri yaad, koi achi baat ho
-              toh tujhe batane ka mann, koi bura din ho toh teri yaad me hi
-              comfort mil jata hai yrr 🫂😭. Tu sirf meri girlfriend nhi hai, tu
-              meri habit ban chuki hai 🥹❤️.
-            </p>
-            <br />
-            <p>
-              yk tujhme aisa kya pasand hai 😭😭. Merko khud nhi pata yrr.
-              Shayad tera smile, tera vibe, tera nature, ya fir vo feeling jo
-              tere saath aati hai 🥺🫂. Bas itna pata hai ki jab tu khush hoti
-              hai toh me bhi khush hota hu aur jab tu sad hoti hai toh mera bhi
-              mood off ho jata hai 😭❤️.
-            </p>
-            <br />
-            <p>
-              Aur yrr 14 January ka vo first hug 🥹🫂. Ksm se meri life ke best
-              moments me se ek rahega vo. Fir 20 January ka vo cheek kiss 😭❤️.
-              Aaj bhi yaad karta hu toh smile aa jati hai yrr. Aur har 22nd ko
-              bas ek hi feeling aati hai ki yrr me kitna lucky hu 🥹🧿.
-            </p>
-            <br />
-            <p>
-              Aur han yrr, thank you for staying 🥺❤️. Thank you meri bakwas
-              sunne ke liye, merko samjhne ke liye, support karne ke liye aur
-              itna pyaar dene ke liye 😭🫂. Kabhi kabhi me overthink karta hu,
-              kabhi galti kar deta hu, kabhi tujhe hurt bhi kar deta hu 😭🥺.
-              Uske liye genuinely sorry yrr. Me kabhi nhi chahta ki meri wajah
-              se teri aankho me ek bhi aansu aaye 🫂❤️.
-            </p>
-            <p>
-              Bas ek baat yaad rakhna Malkin 🥹🧿. Chahe kitne bhi log aaye ya
-              jaye, meri life me tera place koi nhi le sakta. Tu meri comfort
-              hai, meri peace hai, meri happiness hai aur meri favourite person
-              hai 😭❤️.
-            </p>
-            <p>
-              You are my <b>11:11</b> wish come true 🥹🧿. You're the reason I
-              started believing in beautiful things again🫂❤️. You add colors to
-              my world when everything feels dull. You're my sunshine on
-              difficult days, my moon during quiet nights, and the brightest
-              star in every dream I have. Life feels better when you're around,
-              and even on the hardest days, the thought of you gives me
-              strength. You are not just someone I love—you are my comfort, my
-              peace, my favorite person, and my home 🎀😭😭🧿🧿🥹🫂
-            </p>
-            <p>
-              ek ceej or bolna chauga bacha jo like me paragraph me add to nhi
-              karna chta tha coz i want to keep it cute heheh ,but abhi sone se
-              phele aap gussa ho gaye bacha i really dont mean that yrr what i
-              mean with a perfect convo is like mst topic pe ya gossip seassion
-              and esa nhi hai ki convo nhi hoti ,hoti hai bacha 😭 and agar
-              please bura laga to merko maaf kr dena and try to understand me
-              <b>sorryyyy bacha 🥹</b>
-            </p>
-            <p>
-              Aur sach bolu?<b> I won yrr 🥹🫂❤️. </b>
-              Jab bhi tere baare me sochta hu na toh lagta hai ki life ne merko
-              sabse beautiful gift de diya 😭🎀.
-            </p>
-            <p>
-              I really really really
-              <b>
-                loveeeeeeeeeeeeeeeeeeeeeeeeeeeeeee youuuuuuuuuuuuuuuuuuu
-                sooooooooooooooooooooo muchhhhhhhhhhhh mera pyara bachaaa
-                🥹❤️🫂💋🎀🧿</b
-              >
-            </p>
-            <br />
-            <p>
-              This website isn't enough. No words are enough. But they're all I
-              have — and they're all yours.
-            </p>
-            <br />
-            <div class="letter-sign">
-              ❤️ Forever Yours ❤️<br />
-              <em><b>Gulam😋🫂🧿</b></em>
             </div>
           </div>
+          <p class="quote memory-quote reveal delay-3">
+            One gentle kiss said everything.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 5 -->
+      <section class="memory-section" id="birthday-section">
+        <div class="memory-inner">
+          <span class="eyebrow reveal">Chapter Five</span>
+          <h2 class="memory-title reveal delay-1">Malkin's Birthday</h2>
+          <div class="starmap-wrap reveal delay-2">
+            <div class="starmap-ring"></div>
+            <div class="starmap-ring inner"></div>
+            <div class="starmap-disc" id="mapBirthday"></div>
+            <span class="starmap-caption"
+              >the sky celebrating your birthday</span
+            >
+          </div>
+          <div class="memory-details reveal delay-2">
+            <div class="detail-item">
+              <span class="label">Date</span
+              ><span class="value">21 January 2026</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Time</span><span class="value">5PM</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Location</span
+              ><span class="value">fusion cafe </span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Moon Phase</span
+              ><span class="value">Waxing Crescent</span>
+            </div>
+            <div class="detail-item" style="grid-column: 1/-1">
+              <span class="label">A Gift to the Universe</span>
+              <span class="value"
+                >The day you began making the world brighter.</span
+              >
+            </div>
+          </div>
+          <p class="quote memory-quote reveal delay-3">
+            The universe became brighter because you were born.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 6 -->
+      <section class="memory-section" id="roseday-section">
+        <div class="memory-inner">
+          <span class="eyebrow reveal">Chapter Six</span>
+          <h2 class="memory-title reveal delay-1">Rose Day</h2>
+          <div class="starmap-wrap reveal delay-2">
+            <div class="starmap-ring"></div>
+            <div class="starmap-ring inner"></div>
+            <div class="starmap-disc" id="mapRoseDay"></div>
+            <span class="starmap-caption"
+              >the sky above our white rose ride</span
+            >
+          </div>
+          <div class="memory-details reveal delay-2">
+            <div class="detail-item">
+              <span class="label">Date</span
+              ><span class="value">7 February 2026</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Time</span
+              ><span class="value">Afternoon</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Location</span
+              ><span class="value">DIvya ke ghar ke side 👽😂</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Moon Phase</span
+              ><span class="value">Waning Gibbous</span>
+            </div>
+            <div class="detail-item" style="grid-column: 1/-1">
+              <span class="label">The Perfect Day</span>
+              <span class="value"
+                >A rose in your hand, the wind in our faces, and your hugs in my
+                heart.</span
+              >
+            </div>
+          </div>
+          <p class="quote memory-quote reveal delay-3">
+            A white rose carried every word my heart couldn't say.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 7 -->
+      <section class="memory-section" id="lipkiss-section">
+        <div class="memory-inner">
+          <span class="eyebrow reveal">Chapter Seven</span>
+          <h2 class="memory-title reveal delay-1">Our First Lip Kiss</h2>
+          <div class="starmap-wrap reveal delay-2">
+            <div class="starmap-ring"></div>
+            <div class="starmap-ring inner"></div>
+            <div class="starmap-disc" id="mapKiss"></div>
+            <span class="starmap-caption">the sky that sealed our forever</span>
+          </div>
+          <div class="memory-details reveal delay-2">
+            <div class="detail-item">
+              <span class="label">Date</span
+              ><span class="value">22 March 2026</span>
+            </div>
+
+            <div class="detail-item">
+              <span class="label">Location</span
+              ><span class="value">Rishi ka gahr 👽</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Moon Phase</span
+              ><span class="value">Waxing Crescent</span>
+            </div>
+            <div class="detail-item" style="grid-column: 1/-1">
+              <span class="label">Heart's Memory</span>
+              <span class="value"
+                >The sweetest memory we'll carry forever.</span
+              >
+            </div>
+          </div>
+          <p class="quote memory-quote reveal delay-3">
+            Somewhere between one heartbeat and another, forever quietly began.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+       SECTION 3 — TIMELINE
+       ============================================================ -->
+      <section class="memory-section" id="timeline-section">
+        <div class="memory-inner">
+          <span class="eyebrow reveal">Chapter Three</span>
+          <h2 class="memory-title reveal delay-1">Our Story Continues</h2>
+          <p class="quote reveal delay-2" style="font-size: 1.25rem">
+            Love isn&rsquo;t measured by years.<br />It&rsquo;s measured by
+            every month we kept choosing each other.
+          </p>
+
+          <div class="timeline-track" id="timelineTrack">
+            <div class="timeline-line"></div>
+            <!-- Timeline items generated by JS from MONTHLY_ANNIVERSARY_LIST -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+       FINAL SCENE
+       ============================================================ -->
+      <section id="final-scene">
+        <span class="eyebrow reveal">Chapter Four</span>
+        <h2 class="memory-title reveal delay-1">Where the Skies Meet</h2>
+
+        <div class="heart-canvas-wrap reveal delay-2">
+          <svg id="heartSvg" viewBox="0 0 400 400"></svg>
+        </div>
+
+        <p class="quote final-quote reveal delay-2">
+          No matter how the stars moved after this day, this moment became my
+          favorite constellation.
+        </p>
+
+        <p class="final-quote-2 reveal delay-3">
+          If every star represented one reason I love you, the universe would
+          still need more.
+        </p>
+
+        <button class="last-thing-btn reveal delay-3" id="lastThingBtn">
+          One Last Thing &hearts;
+        </button>
+      </section>
+
+      <footer>
+        The Sky Remembered &middot; Written in stars, kept forever
+      </footer>
+    </div>
+
+    <!-- ============================================================
+     MODAL — "One Last Thing"
+     ============================================================ -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-box">
+        <button class="modal-close" id="modalClose" aria-label="Close">
+          &times;
+        </button>
+        <h3 class="modal-title">One Last Thing</h3>
+
+        <div class="modal-block">
+          <span class="label">A Letter</span>
+          <p class="letter-text">
+            IK baby mene 6 month complete hone pe kuch bhi nhi kiya coz me busy
+            tha and that is really my biggest guilt ever please merko us ke liye
+            maaaf kr dena bacha , heheh ahh soo hann here a paragraph for you
+            baachaa 🎀🎀🥹 You are my EVERYTHING GURLL If I could choose one
+            place to stay forever, it would be wherever you are. yjk I loveeee
+            every second of my life with you every moment every meet is special
+            for me just coz you were there 🥹 youuuu areee reallyyyy sooo sooo
+            pretty , and pure hearted 🎀🥹 I'm blessed I'm won In my life
+            🫂🥹🧿🧿 Bas ek promise hai chahe kitna bhi time nikal jaaye, kitni
+            bhi memories aur ban jaayein, main har baar tumhe waise hi choose
+            karunga jaise pehli baar kiya tha. Aur har baar tumhe dekhkar dil
+            bas ek hi baat bolega ki you are the best part of my life 🧿🧿🧿🧿🧿
+            Can't afford to leave you never bacha 🥺🥺🥺🥺🥺🫂 You are my 11:11
+            wish come true 🥹🧿. You're the reason I started believing in
+            beautiful things again🫂❤️. You add colors to my world when
+            everything feels dull. You're my sunshine on difficult days, my moon
+            during quiet nights, and the brightest star in every dream I have.
+            Life feels better when you're around, and even on the hardest days,
+            the thought of you gives me strength. You are not just someone I
+            love—you are my comfort, my peace, my favorite person, and my home
+            🎀😭😭🧿🧿🥹🫂yk You are my fav person on the earth 🥹🥹🫂😭 I still
+            remember that night 15 feb jab me sadi se aaya then story pe lick
+            fir hamara convo 🥹🫂 then like achi frdship huhi and han kabhi best
+            friend nhi bane me phele bhot jada irritating bhi lagta tha terko
+            hann me huu yrr I'm really sorry about it but I Always try to be
+            perfect and tuze kabhi nhi irritate karu per in the end tu ho jati
+            hai tu roo deti hai me kabhi bhi nhi chata ki meri wajhse se teri
+            ankh me even ek ansu bhi aaye but in the end meri koi baat hurt kr
+            jati hai Andddd I'm really sorry about it yyrrr don't say ki ye
+            terko bich bich me kya ho jata hai kyu ese soch ta hai I always see
+            reality jo real hai vo hai and I don't want to be fake in front of
+            you neverrrrr !!!! 🥹🥹🫠😭😭🧿🧿 anddd theennn in the school hamra
+            milna upper watercooler ke pass damm puri school life me kabhi fav
+            memory nhi thi but in last tere se friendship then these memories
+            merko yrr tbh sirf tere wajhe se school ki yaad aati hia ki han roj
+            milna dekhna like wow yrr 😭🫠🥹I'm soo blessed then 22 dec you
+            choose me as your bf idk I'm a good or not but han I will always try
+            to be a good bf and i'll never lie promise In our relationship 🫂
+            and agar meri koi baat aapko buri lage to please batana merko kabhi
+            mat chupaa ki ye bura laga hai coz i dont want any missunderstanding
+            in our realtionship 😭🎀🫂 I still remeber jab tu mere liye vo
+            bracelete layi thi 🫠 tune merko ankush sir ka bhana leke upe
+            bulaaya han i agree meri bhot fati and then ham uper mile fir udhar
+            sdeio ke pass tune diya and hamne handshake bhi kiya yrr ligit i
+            fall in love with you that day han merko attration tha but han like
+            itname jann ta nhi tha per after taht I was in love han like me
+            irritate bhi karta tha ,hu vese dekhe toh heheh anyways then on 22
+            DEC 🥹fav day of my life and best dayyy fr Phir 14 Jan ka vo first
+            hug 🥹🫂 yrrr I can't even explain ki vo moment mere liye kitna
+            special tha. Pehli baar laga ki han ye sab real hai, koi dream nhi
+            or phir 21 Jan ka vo day 😭🎀, meri life ke sabse beautiful moments
+            me se ek. Aaj bhi jab vo sab yaad karta hu na toh automatically
+            smile aa jati hai yrr frr ksm se I won yrr or yrr sach bolu? Mere
+            liye sirf hugs ya kisses special nahi hai. Mere liye vo chhoti
+            chhoti baate zyada special hai. School me tujhe dekhna, random baate
+            karna, tere messages ka wait karna, tere gusse ko handle karna,
+            tujhe manana, tere nakhre uthana 😭🎀 Han humne kalesh bhi kiye,
+            misunderstandings bhi hui, maine overthink bhi kiya or kabhi kabhi
+            tujhe hurt bhi kar diya 😭🥺. Uske liye I'm genuinely sorry yrr But
+            ek cheez kabhi change nahi hui mera pyaar or respect tere liye. Har
+            fight ke baad mujhe sirf ek hi dar lagta hai ki kahin tu mujhse dur
+            na ho jaye 🥺🫂.or aaj jab 2026 ke first 5 months khatam ho rahe
+            hai, mujhe bas itna lag raha hai ki ye months meri life ke best
+            months the kyuki tu mere saath thi 🥹❤️. Thank you for every hug,
+            every smile, every memory, every effort and every moment jo tune
+            mere saath spend kiya. Thank you for these 6 months and for being
+            mine 💖 I really, really loveeeeeeeeeee youuuuuuuuuuuuu
+            sooooooooooooooooo soooooooooooo sooooooooooooooo
+            muchhhhhhhhhhhhhhhh bachaaaaaaaaaaa👉👈💋💋🧿🧿🧿🧿🧿🫂🎀
+            !!!!!!!!!!!!!!!!!!!!! isme kuch hidden hai like kuch stars jisme se
+            ek me ek password hai next jo bhi aayega usme ek ceej open kr ne ke
+            liye vo password kaam aayega to try to find the hidden stars and
+            don't ask me ? ahh video nhi hai isme kyuki its 22:30 vn done but video bhi done but aap thora gussa ho and i dont want ki me aapko jada stress ya naraz karu in periods take care bacha video bc 1.2gb ka hia 🤡🤡llap me bej nhi paa rha hhe
+          </p>
+        </div>
+
+        <div class="modal-block">
+          <span class="label">A Voice Note</span>
+          <audio controls>
+            <source src="/audio.mp4" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+
+        <div class="modal-block">
+          <span class="label">A Favorite Photo</span>
+          <div class="photo-frame">  
+            <img  src="/IMG_20250818_144438_125.jpg"     height: 50%;
+    width: 100%; alt=""/>
+          </div>
+        </div>
+
+        <div class="modal-block">
+          <span class="label">A Short Video</span>
+          <video controls poster="VIDEO_POSTER_PLACEHOLDER.jpg">
+            <source src="SHORT_VIDEO_FILE.mp4" type="video/mp4" />
+            Your browser does not support the video element.
+          </video>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- ======================================= -->
-    <!-- SCRIPTS -->
-    <!-- ======================================= -->
+    <!--
+  ============================================================
+  HIDDEN — HOW TO ADD FUTURE MEMORIES
+  ============================================================
+  To add a new memory section without altering the site's design:
+
+  1. Duplicate the markup block for "SECTION 1 — FIRST HUG" above.
+  2. Give the new section a unique id, e.g. id="new-memory-section".
+  3. Fill in these placeholders:
+
+     NEW_MEMORY_TITLE
+     NEW_MEMORY_DATE
+     NEW_MEMORY_TIME
+     NEW_MEMORY_LOCATION
+     NEW_MEMORY_MESSAGE
+
+  4. Generate a new star field for the .starmap-disc by copying one
+     of the existing inline SVGs produced by generateStarMapSVG()
+     in the script below, or let it auto-generate by adding the new
+     disc's id to the STAR_MAP_IDS array in the script.
+
+  5. To add more monthly anniversary points to the Chapter Three
+     timeline, add entries to the MONTHLY_ANNIVERSARY_LIST array
+     in the script below — no HTML editing required there.
+
+  6. To add more secret messages to the clickable stars, add strings
+     to the EASTER_EGG_MESSAGES array in the script below.
+  ============================================================
+-->
+
     <script>
-      // ===== BACKGROUND CANVAS =====
-      const canvas = document.getElementById("bg-canvas");
-      const ctx = canvas.getContext("2d");
+      (function () {
+        "use strict";
 
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
-
-      // Gradient animation
-      let gradAngle = 0;
-      function drawBackground() {
-        const w = canvas.width,
-          h = canvas.height;
-        gradAngle += 0.002;
-        const gx = Math.sin(gradAngle) * 0.3 + 0.5;
-        const gy = Math.cos(gradAngle * 0.7) * 0.3 + 0.5;
-
-        const grad = ctx.createRadialGradient(
-          w * gx,
-          h * gy,
-          0,
-          w * 0.5,
-          h * 0.5,
-          w * 0.9,
-        );
-        grad.addColorStop(0, "#ffd6e7");
-        grad.addColorStop(0.4, "#fce4ec");
-        grad.addColorStop(0.7, "#f8bbd0");
-        grad.addColorStop(1, "#ffcdd2");
-
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, w, h);
-      }
-
-      // Particles
-      const particles = [];
-      class Particle {
-        constructor() {
-          this.reset();
-        }
-        reset() {
-          this.x = Math.random() * canvas.width;
-          this.y = canvas.height + 20;
-          this.size = Math.random() * 8 + 3;
-          this.speedY = -(Math.random() * 0.8 + 0.3);
-          this.speedX = (Math.random() - 0.5) * 0.5;
-          this.opacity = Math.random() * 0.5 + 0.1;
-          this.type = Math.random() > 0.4 ? "petal" : "heart";
-          this.rotation = Math.random() * Math.PI * 2;
-          this.rotSpeed = (Math.random() - 0.5) * 0.03;
-          this.swing = Math.random() * 2 + 1;
-          this.swingAngle = Math.random() * Math.PI * 2;
-        }
-        update() {
-          this.y += this.speedY;
-          this.swingAngle += 0.02;
-          this.x += Math.sin(this.swingAngle) * this.swing * 0.03 + this.speedX;
-          this.rotation += this.rotSpeed;
-          if (this.y < -30) this.reset();
-        }
-        draw() {
-          ctx.save();
-          ctx.translate(this.x, this.y);
-          ctx.rotate(this.rotation);
-          ctx.globalAlpha = this.opacity;
-          ctx.font = `${this.size * 2}px serif`;
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          if (this.type === "petal") {
-            const petals = ["🌸", "🌺", "🌷", "💮"];
-            ctx.fillText(
-              petals[Math.floor(Math.random() * petals.length)],
-              0,
-              0,
-            );
-          } else {
-            ctx.fillText("❤️", 0, 0);
-          }
-          ctx.restore();
-        }
-      }
-
-      for (let i = 0; i < 40; i++) {
-        const p = new Particle();
-        p.y = Math.random() * canvas.height;
-        particles.push(p);
-      }
-
-      // Glow orbs
-      const orbs = [];
-      for (let i = 0; i < 5; i++) {
-        orbs.push({
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-          r: Math.random() * 200 + 100,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          hue: Math.random() * 20 + 340,
-        });
-      }
-
-      function drawOrbs() {
-        orbs.forEach((o) => {
-          o.x += o.vx;
-          o.y += o.vy;
-          if (o.x < 0 || o.x > canvas.width) o.vx *= -1;
-          if (o.y < 0 || o.y > canvas.height) o.vy *= -1;
-          const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
-          g.addColorStop(0, `hsla(${o.hue}, 80%, 80%, 0.15)`);
-          g.addColorStop(1, "transparent");
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-        });
-      }
-
-      function animate() {
-        drawBackground();
-        drawOrbs();
-        particles.forEach((p) => {
-          p.update();
-          p.draw();
-        });
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      // ===== PROGRESS BAR =====
-      window.addEventListener("scroll", () => {
-        const scrollTop = window.scrollY;
-        const docHeight =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const pct = (scrollTop / docHeight) * 100;
-        document.getElementById("progress-bar").style.width = pct + "%";
-      });
-
-      // ===== SPARKLES =====
-      function createSparkles() {
-        const sparkles = ["✦", "✧", "⋆", "✨", "·"];
-        for (let i = 0; i < 15; i++) {
-          const el = document.createElement("div");
-          el.className = "sparkle";
-          el.textContent =
-            sparkles[Math.floor(Math.random() * sparkles.length)];
-          el.style.setProperty("--dur", Math.random() * 2 + 1 + "s");
-          el.style.setProperty("--delay", Math.random() * 3 + "s");
-          el.style.setProperty("--size", Math.random() * 0.8 + 0.4 + "rem");
-          el.style.left = Math.random() * 100 + "vw";
-          el.style.top = Math.random() * 100 + "vh";
-          el.style.color = `hsl(${340 + Math.random() * 30}, 60%, 70%)`;
-          document.body.appendChild(el);
-        }
-      }
-      createSparkles();
-
-      // ===== SCROLL ANIMATIONS =====
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) e.target.classList.add("visible");
-          });
-        },
-        { threshold: 0.15 },
-      );
-
-      document
-        .querySelectorAll(".timeline-item")
-        .forEach((el) => observer.observe(el));
-      document.querySelectorAll(".reason-card").forEach((el, i) => {
-        el.style.transitionDelay = i * 30 + "ms";
-        observer.observe(el);
-      });
-
-      // ===== FLOWER GARDEN =====
-      let openedFlowers = new Set();
-      const totalFlowers = 5;
-
-      function openFlower(card) {
-        if (card.classList.contains("opened")) return;
-        card.classList.add("opened");
-        openedFlowers.add(card.dataset.flower);
-
-        // Petal burst
-        const rect = card.getBoundingClientRect();
-        const petals = ["🌸", "🌺", "💮", "🌼"];
-        for (let i = 0; i < 8; i++) {
-          const p = document.createElement("div");
-          p.className = "petal-burst";
-          p.textContent = petals[Math.floor(Math.random() * petals.length)];
-          const angle = (i / 8) * Math.PI * 2;
-          const dist = 60 + Math.random() * 40;
-          p.style.setProperty("--tx", Math.cos(angle) * dist + "px");
-          p.style.setProperty("--ty", Math.sin(angle) * dist + "px");
-          p.style.left =
-            rect.left + rect.width / 2 - 10 + window.scrollX + "px";
-          p.style.top = rect.top + rect.height / 2 - 10 + window.scrollY + "px";
-          p.style.position = "absolute";
-          p.style.zIndex = "100";
-          document.body.appendChild(p);
-          setTimeout(() => p.remove(), 1000);
-        }
-
-        card.querySelector(".flower-quote").style.display = "block";
-
-        // Check if all opened
-        if (openedFlowers.size === totalFlowers) {
-          setTimeout(showGardenFinale, 800);
-        }
-      }
-
-      function showGardenFinale() {
-        const finale = document.getElementById("garden-finale");
-        finale.classList.add("visible");
-        finale.scrollIntoView({ behavior: "smooth", block: "start" });
-
-        const ids = [
-          "fl1",
-          "fl2",
-          "fl3",
-          "fl4",
-          "fl5",
-          "fl6",
-          "fl7",
-          "fl8",
-          "fl9",
-          "fl10",
-          "fl11",
+        /* ============================================================
+     EDITABLE DATA
+     Update these arrays/values to personalize the experience.
+     ============================================================ */
+        const MONTHLY_ANNIVERSARY_LIST = [
+          "Dec 22",
+          "Jan 22",
+          "Feb 22",
+          "Mar 22",
+          "Apr 22",
+          "May 22",
+          "Jun 22",
+          "Jul 22",
         ];
-        ids.forEach((id, i) => {
-          setTimeout(() => {
-            const el = document.getElementById(id);
-            el.style.transition = "opacity 0.8s ease, transform 0.8s ease";
-            el.style.transform = "translateY(20px)";
-            el.style.opacity = "0";
-            requestAnimationFrame(() =>
-              requestAnimationFrame(() => {
-                el.style.opacity = "1";
-                el.style.transform = "translateY(0)";
-              }),
+
+        const EASTER_EGG_MESSAGES = [
+          "You are my Everything🧿🧿",
+          "you are my Devii 🥹🧿",
+          "Malkin I loveeee youuu 🥹🧿",
+          "You are my World 🥹🧿",
+          "falani jii 🎀🥹",
+          "my loveee 🥹🧿",
+          "password: malkinpaglu",
+        ];
+
+        /* ============================================================
+     BACKGROUND LIVING SKY (canvas)
+     Twinkling stars, drifting dust, occasional shooting stars,
+     gentle mouse parallax. Kept lightweight for 60fps.
+     ============================================================ */
+        const canvas = document.getElementById("sky-canvas");
+        const ctx = canvas.getContext("2d");
+        let W, H, DPR;
+        let stars = [];
+        let dust = [];
+        let shootingStars = [];
+        let mouseX = 0,
+          mouseY = 0,
+          targetParX = 0,
+          targetParY = 0,
+          parX = 0,
+          parY = 0;
+        const reducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        function resize() {
+          DPR = Math.min(window.devicePixelRatio || 1, 2);
+          W = window.innerWidth;
+          H = window.innerHeight;
+          canvas.width = W * DPR;
+          canvas.height = H * DPR;
+          canvas.style.width = W + "px";
+          canvas.style.height = H + "px";
+          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+          buildStars();
+        }
+
+        function buildStars() {
+          const count = Math.round((W * H) / 9000);
+          stars = [];
+          for (let i = 0; i < count; i++) {
+            stars.push({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              r: Math.random() * 1.3 + 0.3,
+              baseAlpha: Math.random() * 0.5 + 0.3,
+              phase: Math.random() * Math.PI * 2,
+              speed: Math.random() * 0.015 + 0.006,
+              depth: Math.random() * 0.6 + 0.2,
+            });
+          }
+          const dustCount = Math.round((W * H) / 60000);
+          dust = [];
+          for (let i = 0; i < dustCount; i++) {
+            dust.push({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              r: Math.random() * 1.6 + 0.6,
+              vy: -(Math.random() * 0.06 + 0.02),
+              vx: (Math.random() - 0.5) * 0.03,
+              alpha: Math.random() * 0.15 + 0.05,
+            });
+          }
+        }
+
+        function maybeSpawnShootingStar() {
+          if (reducedMotion) return;
+          if (Math.random() < 0.0028 && shootingStars.length < 2) {
+            const startX = Math.random() * W * 0.6 + W * 0.1;
+            shootingStars.push({
+              x: startX,
+              y: -20,
+              vx: 2.2 + Math.random() * 1.4,
+              vy: 1.1 + Math.random() * 0.6,
+              life: 0,
+              maxLife: 90 + Math.random() * 40,
+              len: 90 + Math.random() * 60,
+            });
+          }
+        }
+
+        let t = 0;
+        function draw() {
+          t += 1;
+          ctx.clearRect(0, 0, W, H);
+
+          // parallax easing
+          parX += (targetParX - parX) * 0.03;
+          parY += (targetParY - parY) * 0.03;
+
+          // stars
+          for (const s of stars) {
+            const alpha = s.baseAlpha + Math.sin(t * s.speed + s.phase) * 0.35;
+            const a = Math.max(0, Math.min(1, alpha));
+            const ox = s.x + parX * s.depth;
+            const oy = s.y + parY * s.depth;
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(245,242,232,${a})`;
+            ctx.arc(ox, oy, s.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // dust
+          for (const d of dust) {
+            d.x += d.vx;
+            d.y += d.vy;
+            if (d.y < -10) {
+              d.y = H + 10;
+              d.x = Math.random() * W;
+            }
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(216,185,120,${d.alpha})`;
+            ctx.arc(d.x + parX * 0.15, d.y + parY * 0.15, d.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // shooting stars
+          maybeSpawnShootingStar();
+          for (let i = shootingStars.length - 1; i >= 0; i--) {
+            const sh = shootingStars[i];
+            sh.x += sh.vx * 4;
+            sh.y += sh.vy * 4;
+            sh.life++;
+            const fade = 1 - sh.life / sh.maxLife;
+            if (fade <= 0) {
+              shootingStars.splice(i, 1);
+              continue;
+            }
+            const grad = ctx.createLinearGradient(
+              sh.x,
+              sh.y,
+              sh.x - (sh.len * sh.vx) / 2.6,
+              sh.y - (sh.len * sh.vy) / 2.6,
             );
-          }, i * 700);
+            grad.addColorStop(0, `rgba(255,255,255,${0.85 * fade})`);
+            grad.addColorStop(1, `rgba(255,255,255,0)`);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            ctx.moveTo(sh.x, sh.y);
+            ctx.lineTo(
+              sh.x - (sh.len * sh.vx) / 2.6,
+              sh.y - (sh.len * sh.vy) / 2.6,
+            );
+            ctx.stroke();
+          }
+
+          requestAnimationFrame(draw);
+        }
+
+        window.addEventListener("resize", resize);
+        window.addEventListener("mousemove", (e) => {
+          targetParX = (e.clientX / W - 0.5) * -18;
+          targetParY = (e.clientY / H - 0.5) * -18;
         });
-      }
 
-      // ===== OPEN WHEN =====
-      const owMessages = {
-        sad: {
-          title: "💔 When You're Sad",
-          body: `bachaa ??? ik it feels heavy right now. But I want you to know  whatever it is, you don't have to carry it alone. I may not always be right beside you, but I'm always with you. Your sadness matters to me. Your tears matter to me. You matter to me. Let yourself feel it, and then let me be the reason you smile again. I'm just a call away. Always. aao bacha mere pass aao 🥹`,
-        },
-        angry: {
-          title: "😡 When You're Angry",
-          body: `It's okay to be angry, Chanchal. It means you care. It means things matter to you. But please, in your anger, don't forget that my love for you doesn't change. Not for a moment. I may say the wrong things sometimes. I may not understand quickly enough. But I'll always choose you over being right. Take your time. I'll be here. I'm not going anywhere. 💗`,
-        },
-        miss: {
-          title: "🥺 When You Miss Me",
-          body: `Look, you're missing me. That means I did something right. 😊 But jokes aside — I miss you too. Always. Distance is just distance. It can't touch what we have. Close your eyes and remember our warmest moment. That's where I'll be. In the space between your heartbeats. Missing you right back. 🫂`,
-        },
-        sleep: {
-          title: "🌙 Before You Sleep",
-          body: `Before you close your eyes tonight — I want you to know that somewhere, I'm thinking of you. I hope today was kind to you. I hope you smiled at least once. And if you didn't, I hope tomorrow makes up for it. Sleep well, my beautiful Chanchal. Dream something soft. And know that you are deeply, completely, endlessly loved. Goodnight. ❤️`,
-        },
-      };
+        resize();
+        draw();
 
-      function openWhen(type) {
-        const msg = owMessages[type];
-        document.getElementById("modal-title").textContent = msg.title;
-        document.getElementById("modal-body").textContent = msg.body;
-        document.getElementById("modal").classList.add("active");
-      }
+        /* ============================================================
+     LANDING SEQUENCE
+     ============================================================ */
+        const ignition = document.getElementById("ignition");
+        const landingLines = document.querySelectorAll(".landing-line");
+        const beginBtn = document.getElementById("beginBtn");
 
-      function closeModal(e) {
-        if (!e || e.target === document.getElementById("modal")) {
-          document.getElementById("modal").classList.remove("active");
-        }
-      }
-
-      // ===== 100 REASONS =====
-      const reasons = [
-        "You make me happy.",
-        "You dare me to be a better version of myself.",
-        "You follow me and you push me.",
-        "You love me in the times when I’m not capable to love myself.",
-        "You love me in times when I’m not lovable.",
-        "You understand me. And when you don’t, you do everything and you go all in to get clarity about the things you don’t understand.",
-        "You respect my boundaries. And you dare to cross them when you are sure you know better.",
-        "You accept my sadness and my anger and you live in harmony with them.",
-        "You see and you love the next best version of me.",
-        "You open yourself up for me.",
-        "You are truthful and vulnerable with me.",
-        "your personality",
-        "your hair",
-        "your humor",
-        "your voice",
-        "your style",
-        "your name",
-        "the way you treat me",
-        "your kindness",
-        "the way you care",
-        "how easily you make me laugh",
-        "our late-night calls",
-        "our calls in general",
-        "the way you laugh with me",
-        "the way you talk to me",
-        "how you motivate me",
-        "your honesty",
-        "your loyalty",
-        "how strong you are (physically and mentally)",
-        "how quickly we clicked",
-        "the peace I found talking to you",
-        "finding my best friend in you",
-        "seeing my future in your eyes",
-        "how fun you are",
-        "the way you appreciate everything",
-        "your gratefulness",
-        "how you never doubt me",
-        "the way you support me",
-        "how proud you are of me",
-        "always being by my side",
-        "loving me unconditionally",
-        "making me feel enough",
-        "making me feel worth it",
-        "inspiring me",
-        "helping me become better",
-        "changing my view on the world",
-        "staying even when things are hard",
-        "teaching me things",
-        "never getting disappointed in me",
-        "talking calmly",
-        "never giving up",
-        "making me feel so loved",
-        "making me feel cared for",
-        "always being there for me",
-        "the way you treat people",
-        "the way you treat animals",
-        "your love for kids",
-        "always thinking of me",
-        "trying your best",
-        "being a bad influence (in a fun way)",
-        "being comfortable in silence with you",
-        "never being aggressive without a reason",
-        "always being motivated",
-        "having a reason for everything",
-        "trying to make people happy",
-        "how you see things",
-        "making me so happy",
-        "giving me a reason",
-        "your lips",
-        "your presence",
-        "keeping your promises",
-        "being reliable",
-        "helping me",
-        "being sweet",
-        "being kind",
-        "being calm even when it's stressful",
-        "talking to you feels right",
-        "being my soulmate",
-        "giving me special memories",
-        "loving every moment with you",
-        "our communication",
-        "being committed",
-        "being disciplined",
-        "loving me for more than just my body",
-        "believing in me",
-        "believing in yourself",
-        "being mostly positive",
-        "being perfect in your own way",
-        "never getting bored of me",
-        "never getting annoyed at me",
-        "the names you call me",
-        "making me feel special",
-        "appreciating small things",
-        "your giggles",
-        "always understanding me",
-        "the glow in your eyes",
-        "being happy even for the smallest things",
-        "not caring if I have money",
-        "never going to bed angry",
-        "calling me when I ask",
-        "your hugs",
-        "calling me if I'm upset",
-        "helping me when I'm upset",
-        "not giving up on your goals",
-        "giving me hope",
-        "making life easier",
-        "making life feel worth it",
-        "being my safe place",
-        "You are wonderful for at least 100 more reasons.",
-        "I love you for at least 100 more reasons.",
-        "YOU🎀🧿",
-      ];
-
-      const grid = document.getElementById("reasons-grid");
-      reasons.forEach((r, i) => {
-        const card = document.createElement("div");
-        card.className = "reason-card";
-        card.innerHTML = `<span class="reason-num">${String(i + 1).padStart(2, "0")}</span>${r}`;
-        grid.appendChild(card);
-      });
-
-      // Re-observe after adding
-      document.querySelectorAll(".reason-card").forEach((el, i) => {
-        el.style.transitionDelay = i * 25 + "ms";
-        observer.observe(el);
-      });
-
-      // ===== SCRATCH CARD =====
-      const scratchCanvas = document.getElementById("scratch-canvas");
-      const scratchCtx = scratchCanvas.getContext("2d");
-      const container = document.getElementById("scratch-container");
-
-      function initScratch() {
-        scratchCanvas.width = container.offsetWidth;
-        scratchCanvas.height = container.offsetHeight;
-
-        // Draw silver overlay
-        const grad = scratchCtx.createLinearGradient(
-          0,
-          0,
-          scratchCanvas.width,
-          scratchCanvas.height,
-        );
-        grad.addColorStop(0, "#d4a8b5");
-        grad.addColorStop(0.3, "#e8c0cc");
-        grad.addColorStop(0.6, "#c896a8");
-        grad.addColorStop(1, "#d4a8b5");
-        scratchCtx.fillStyle = grad;
-        scratchCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
-
-        // Text on scratch surface
-        scratchCtx.fillStyle = "rgba(90,45,58,0.4)";
-        scratchCtx.font = `bold ${scratchCanvas.width * 0.04}px Montserrat, sans-serif`;
-        scratchCtx.textAlign = "center";
-        scratchCtx.fillText(
-          "Scratch here ✨",
-          scratchCanvas.width / 2,
-          scratchCanvas.height / 2,
-        );
-      }
-
-      let scratching = false;
-      let scratchProgress = 0;
-      let revealed = false;
-
-      function getPos(e) {
-        const rect = scratchCanvas.getBoundingClientRect();
-        const touch = e.touches ? e.touches[0] : e;
-        return {
-          x: (touch.clientX - rect.left) * (scratchCanvas.width / rect.width),
-          y: (touch.clientY - rect.top) * (scratchCanvas.height / rect.height),
-        };
-      }
-
-      function scratch(e) {
-        e.preventDefault();
-        if (!scratching || revealed) return;
-        const pos = getPos(e);
-        scratchCtx.globalCompositeOperation = "destination-out";
-        scratchCtx.beginPath();
-        scratchCtx.arc(pos.x, pos.y, 28, 0, Math.PI * 2);
-        scratchCtx.fill();
-        checkProgress();
-      }
-
-      function checkProgress() {
-        if (revealed) return;
-        const data = scratchCtx.getImageData(
-          0,
-          0,
-          scratchCanvas.width,
-          scratchCanvas.height,
-        ).data;
-        let transparent = 0;
-        for (let i = 3; i < data.length; i += 4)
-          if (data[i] < 128) transparent++;
-        const pct = transparent / (scratchCanvas.width * scratchCanvas.height);
-
-        // Reveal items progressively
-        if (pct > 0.1) document.getElementById("sr1").classList.add("shown");
-        if (pct > 0.2) document.getElementById("sr2").classList.add("shown");
-        if (pct > 0.3) document.getElementById("sr3").classList.add("shown");
-        if (pct > 0.4) document.getElementById("sr4").classList.add("shown");
-        if (pct > 0.5) document.getElementById("sr5").classList.add("shown");
-
-        if (pct > 0.65 && !revealed) {
-          revealed = true;
-          scratchCtx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
-          setTimeout(() => {
-            document.getElementById("scratch-final").classList.add("visible");
-            heartExplosion(container);
-          }, 500);
-        }
-      }
-
-      scratchCanvas.addEventListener("mousedown", (e) => {
-        scratching = true;
-        scratch(e);
-      });
-      scratchCanvas.addEventListener("mousemove", scratch);
-      scratchCanvas.addEventListener("mouseup", () => (scratching = false));
-      scratchCanvas.addEventListener(
-        "touchstart",
-        (e) => {
-          scratching = true;
-          scratch(e);
-        },
-        { passive: false },
-      );
-      scratchCanvas.addEventListener("touchmove", scratch, { passive: false });
-      scratchCanvas.addEventListener("touchend", () => (scratching = false));
-
-      window.addEventListener("load", initScratch);
-
-      // ===== ENVELOPE =====
-      let envelopeOpened = false;
-      function openEnvelope() {
-        if (envelopeOpened) return;
-        envelopeOpened = true;
-        document.getElementById("the-envelope").classList.add("opened");
-        heartExplosion(document.getElementById("the-envelope"));
+        // fade the black ignition overlay away to reveal stars appearing
         setTimeout(() => {
-          document.getElementById("letter-content").classList.add("visible");
-        }, 900);
-      }
+          ignition.style.transition = "opacity 3.5s ease";
+          ignition.style.opacity = "0";
+        }, 400);
+        setTimeout(() => {
+          ignition.style.display = "none";
+        }, 4200);
 
-      // ===== HEART EXPLOSION =====
-      function heartExplosion(origin) {
-        const rect = origin.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2 + window.scrollX;
-        const cy = rect.top + rect.height / 2 + window.scrollY;
-        for (let i = 0; i < 20; i++) {
-          setTimeout(() => {
-            const h = document.createElement("div");
-            h.style.cssText = `position:absolute;left:${cx}px;top:${cy}px;font-size:${Math.random() * 1.5 + 0.8}rem;pointer-events:none;z-index:999;animation:heartFly 2s ease-out forwards;`;
-            h.textContent = Math.random() > 0.3 ? "❤️" : "🌸";
-            const angle = Math.random() * Math.PI * 2;
-            const dist = 100 + Math.random() * 150;
-            h.style.setProperty("--tx", Math.cos(angle) * dist + "px");
-            h.style.setProperty("--ty", Math.sin(angle) * dist + "px");
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 2000);
-          }, i * 60);
+        landingLines.forEach((line, i) => {
+          setTimeout(
+            () => {
+              line.classList.add("visible");
+            },
+            1600 + i * 1900,
+          );
+        });
+        setTimeout(
+          () => {
+            beginBtn.classList.add("visible");
+          },
+          1600 + landingLines.length * 1900 + 300,
+        );
+
+        beginBtn.addEventListener("click", () => {
+          document
+            .getElementById("instagram-section")
+            .scrollIntoView({ behavior: "smooth" });
+        });
+
+        /* ============================================================
+     SCROLL REVEALS
+     ============================================================ */
+        const revealEls = document.querySelectorAll(".reveal");
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("in-view");
+              }
+            });
+          },
+          { threshold: 0.2 },
+        );
+        revealEls.forEach((el) => io.observe(el));
+
+        /* ============================================================
+     STAR MAP GENERATION (inline SVG per memory)
+     Deterministic-ish pseudo star fields with a light
+     constellation line drawn between a few points.
+     ============================================================ */
+        // Convert any date into a unique seed
+        function dateToSeed(dateString) {
+          let seed = 0;
+
+          for (let i = 0; i < dateString.length; i++) {
+            seed += dateString.charCodeAt(i) * (i + 1);
+          }
+
+          return seed;
         }
-      }
 
-      // Add heartFly keyframe
-      const style = document.createElement("style");
-      style.textContent = `@keyframes heartFly {
-  0% { transform: translate(0,0) scale(0); opacity: 1; }
-  100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
-}`;
-      document.head.appendChild(style);
+        function generateStarMapSVG(dateString) {
+          const seed = dateToSeed(dateString);
 
-      // ===== FLOATING HEARTS =====
-      function spawnHeart() {
-        const h = document.createElement("div");
-        h.className = "float-heart";
-        h.textContent = Math.random() > 0.5 ? "❤️" : "🌸";
-        h.style.left = Math.random() * 100 + "vw";
-        h.style.animationDuration = Math.random() * 10 + 8 + "s";
-        h.style.animationDelay = Math.random() * 5 + "s";
-        h.style.fontSize = Math.random() * 1.5 + 0.5 + "rem";
-        document.body.appendChild(h);
-        setTimeout(() => h.remove(), 20000);
-      }
+          let s = seed;
 
-      setInterval(spawnHeart, 800);
-      for (let i = 0; i < 10; i++) spawnHeart();
+          function rand() {
+            s = (s * 9301 + 49297) % 233280;
+            return s / 233280;
+          }
+
+          const w = 300;
+          const h = 300;
+
+          let svg = `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+
+          const points = [];
+
+          // Background stars
+          for (let i = 0; i < 130; i++) {
+            svg += `
+        <circle
+            cx="${(rand() * w).toFixed(1)}"
+            cy="${(rand() * h).toFixed(1)}"
+            r="${(rand() * 0.4).toFixed(2)}"
+            fill="white"
+            opacity="0.18"/>`;
+          }
+
+          // Main stars
+          const starCount = 55;
+
+          for (let i = 0; i < starCount; i++) {
+            const x = rand() * w;
+            const y = rand() * h;
+            const r = rand() * 1.3 + 0.5;
+            const delay = (rand() * 3.5).toFixed(2);
+
+            points.push([x, y]);
+
+            svg += `
+        <circle
+            class="map-star"
+            cx="${x.toFixed(1)}"
+            cy="${y.toFixed(1)}"
+            r="${r.toFixed(2)}"
+            fill="#f5f2e8"
+            style="animation-delay:${delay}s"/>`;
+          }
+
+          // Bright stars
+          for (let i = 0; i < 8; i++) {
+            const x = rand() * w;
+            const y = rand() * h;
+
+            svg += `
+        <circle
+            cx="${x.toFixed(1)}"
+            cy="${y.toFixed(1)}"
+            r="2.4"
+            fill="#fff8dc"
+            opacity="0.95"/>`;
+          }
+
+          // Constellation
+          const consPts = [];
+
+          for (let i = 0; i < 6; i++) {
+            consPts.push(points[Math.floor(rand() * points.length)]);
+          }
+
+          let path = `M ${consPts[0][0].toFixed(1)} ${consPts[0][1].toFixed(1)} `;
+
+          for (let i = 1; i < consPts.length; i++) {
+            path += `L ${consPts[i][0].toFixed(1)} ${consPts[i][1].toFixed(1)} `;
+          }
+
+          svg += `
+    <path
+        d="${path}"
+        fill="none"
+        stroke="#d8c79b"
+        stroke-width="0.7"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        opacity="0.75"/>`;
+
+          svg += `</svg>`;
+
+          return svg;
+        }
+
+        // Use actual dates instead of numbers
+        // ============================================================
+        // STAR MAPS
+        // ============================================================
+
+        // First Instagram Conversation
+        document.getElementById("mapConversation").innerHTML =
+          generateStarMapSVG("2025-02-15");
+
+        // Relationship Started
+        document.getElementById("mapRelationship").innerHTML =
+          generateStarMapSVG("2025-12-22");
+
+        // First Hug
+        document.getElementById("mapHug").innerHTML =
+          generateStarMapSVG("2026-01-14");
+
+        // First Cheek Kiss
+        document.getElementById("mapCheekKiss").innerHTML =
+          generateStarMapSVG("2026-01-20");
+
+        // Malkin's Birthday
+        document.getElementById("mapBirthday").innerHTML =
+          generateStarMapSVG("2026-01-21");
+
+        // Rose Day
+        document.getElementById("mapRoseDay").innerHTML =
+          generateStarMapSVG("2026-02-07");
+
+        // First Lip Kiss / First French Kiss
+        document.getElementById("mapKiss").innerHTML =
+          generateStarMapSVG("2026-03-22");
+        /* ============================================================
+     TIMELINE — CHAPTER THREE
+     Built from MONTHLY_ANNIVERSARY_LIST, illuminates on scroll.
+     ============================================================ */
+        const track = document.getElementById("timelineTrack");
+        MONTHLY_ANNIVERSARY_LIST.forEach((label) => {
+          const item = document.createElement("div");
+          item.className = "timeline-item";
+          item.innerHTML = `
+      <div class="node-wrap">
+        <span class="star-node"></span>
+        <span class="month-label">${label}</span>
+      </div>
+    `;
+          track.appendChild(item);
+        });
+
+        const timelineItems = document.querySelectorAll(".timeline-item");
+        const tio = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("lit");
+              }
+            });
+          },
+          { threshold: 0.6 },
+        );
+        timelineItems.forEach((el) => tio.observe(el));
+
+        /* ============================================================
+     EASTER EGG STARS
+     A handful of clickable stars scattered across the page that
+     reveal a floating message near the click point.
+     ============================================================ */
+        function scatterEggStars() {
+          const sections = document.querySelectorAll(
+            ".memory-section, #final-scene",
+          );
+          sections.forEach((section) => {
+            const count = 2;
+            for (let i = 0; i < count; i++) {
+              const btn = document.createElement("button");
+              btn.className = "egg-star";
+              btn.style.left = Math.random() * 88 + 4 + "%";
+              btn.style.top = Math.random() * 80 + 8 + "%";
+              btn.setAttribute("aria-label", "A hidden message");
+              btn.addEventListener("click", showEggMessage);
+              section.style.position = "relative";
+              section.appendChild(btn);
+            }
+          });
+        }
+
+        function showEggMessage(e) {
+          const msg =
+            EASTER_EGG_MESSAGES[
+              Math.floor(Math.random() * EASTER_EGG_MESSAGES.length)
+            ];
+          const bubble = document.createElement("div");
+          bubble.className = "egg-message";
+          bubble.textContent = "\u2764 " + msg;
+          const rect = e.currentTarget.getBoundingClientRect();
+          bubble.style.left =
+            Math.min(window.innerWidth - 220, rect.left) + "px";
+          bubble.style.top = rect.top - 46 + "px";
+          document.body.appendChild(bubble);
+          setTimeout(() => bubble.remove(), 3300);
+        }
+
+        scatterEggStars();
+
+        /* ============================================================
+     FINAL SCENE — HEART CONSTELLATION
+     Draws a heart shape from points, illuminating them in
+     sequence once the final scene scrolls into view.
+     ============================================================ */
+        function heartPoint(t) {
+          // parametric heart curve, t in [0, 2*PI]
+          const x = 16 * Math.pow(Math.sin(t), 3);
+          const y =
+            13 * Math.cos(t) -
+            5 * Math.cos(2 * t) -
+            2 * Math.cos(3 * t) -
+            Math.cos(4 * t);
+          return [x, y];
+        }
+
+        const heartSvg = document.getElementById("heartSvg");
+        const heartPointCount = 40;
+        const heartPts = [];
+        for (let i = 0; i < heartPointCount; i++) {
+          const t = (i / heartPointCount) * Math.PI * 2;
+          const [hx, hy] = heartPoint(t);
+          const cx = 200 + hx * 9;
+          const cy = 200 - hy * 9;
+          heartPts.push([cx, cy]);
+        }
+
+        let heartMarkup = "";
+        for (let i = 0; i < heartPts.length; i++) {
+          const [x1, y1] = heartPts[i];
+          const [x2, y2] = heartPts[(i + 1) % heartPts.length];
+          heartMarkup += `<line class="heart-line" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" data-idx="${i}"/>`;
+        }
+        for (let i = 0; i < heartPts.length; i++) {
+          const [x, y] = heartPts[i];
+          heartMarkup += `<circle class="heart-point" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.4" data-idx="${i}"/>`;
+        }
+        heartSvg.innerHTML = heartMarkup;
+
+        let heartLit = false;
+        const finalScene = document.getElementById("final-scene");
+        const fio = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && !heartLit) {
+                heartLit = true;
+                lightHeart();
+              }
+            });
+          },
+          { threshold: 0.4 },
+        );
+        fio.observe(finalScene);
+
+        function lightHeart() {
+          const points = heartSvg.querySelectorAll(".heart-point");
+          const lines = heartSvg.querySelectorAll(".heart-line");
+          points.forEach((p, i) => {
+            setTimeout(() => p.classList.add("lit"), i * 70);
+          });
+          lines.forEach((l, i) => {
+            setTimeout(() => l.classList.add("lit"), 600 + i * 70);
+          });
+        }
+
+        /* ============================================================
+     "ONE LAST THING" MODAL
+     ============================================================ */
+        const modalOverlay = document.getElementById("modalOverlay");
+        const lastThingBtn = document.getElementById("lastThingBtn");
+        const modalClose = document.getElementById("modalClose");
+
+        lastThingBtn.addEventListener("click", () => {
+          modalOverlay.classList.add("open");
+          document.body.style.overflow = "hidden";
+        });
+        function closeModal() {
+          modalOverlay.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+        modalClose.addEventListener("click", closeModal);
+        modalOverlay.addEventListener("click", (e) => {
+          if (e.target === modalOverlay) closeModal();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeModal();
+        });
+      })();
     </script>
   </body>
 </html>
