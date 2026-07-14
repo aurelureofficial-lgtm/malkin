@@ -1,203 +1,2408 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sorry Malkin ❤️</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>A Place Made Only For You</title>
+    <meta
+      name="description"
+      content="A private, handcrafted corner of the internet — open only when you miss me."
+    />
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: "Poppins", sans-serif;
-}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=Parisienne&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
-body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#FFF5F7,#FFEFF5,#FFF9F3);
-    overflow:hidden;
-}
+    <style>
+      /* ============================================================
+   DESIGN TOKENS — "Constellation" system
+   Palette: deep night navy, moonlight cream, blush + lavender pastels, soft gold
+   ============================================================ */
+      :root {
+        --midnight: #080b18;
+        --midnight-2: #10152b;
+        --midnight-3: #171d3d;
+        --glass-border: rgba(217, 209, 245, 0.14);
+        --moon: #efe6c9;
+        --blush: #f0b9c9;
+        --lavender: #c3b6e8;
+        --starlight: #f5f3fa;
+        --muted: #9791b5;
+        --gold: #e3b873;
 
-.card{
-    width:420px;
-    max-width:90%;
-    background:rgba(255,255,255,.65);
-    backdrop-filter:blur(15px);
-    border-radius:30px;
-    padding:40px 30px;
-    text-align:center;
-    box-shadow:0 20px 60px rgba(0,0,0,.08);
-}
+        --font-display: "Cormorant Garamond", serif;
+        --font-body: "Inter", sans-serif;
+        --font-script: "Parisienne", cursive;
 
-.gif{
-    width:220px;
-    border-radius:20px;
-}
+        --ease-silk: cubic-bezier(0.22, 0.9, 0.25, 1);
+      }
 
-h1{
-    margin-top:20px;
-    color:#ff6b8a;
-    font-size:34px;
-}
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--midnight);
+        color: var(--starlight);
+        font-family: var(--font-body);
+        font-weight: 300;
+        overflow-x: hidden;
+        cursor: none;
+      }
+      @media (max-width: 820px) {
+        body {
+          cursor: auto;
+        }
+      }
+      ::selection {
+        background: var(--blush);
+        color: var(--midnight);
+      }
 
-p{
-    margin-top:15px;
-    color:#666;
-    line-height:1.8;
-    font-size:17px;
-}
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--font-display);
+        font-weight: 500;
+        margin: 0;
+        letter-spacing: 0.01em;
+      }
+      p {
+        margin: 0;
+      }
+      button {
+        font-family: var(--font-body);
+        cursor: pointer;
+      }
+      a {
+        color: inherit;
+      }
 
-.buttons{
-    position:relative;
-    margin-top:40px;
-    height:70px;
-}
+      .script {
+        font-family: var(--font-script);
+        font-weight: 400;
+      }
 
-button{
-    border:none;
-    cursor:pointer;
-    padding:14px 35px;
-    border-radius:999px;
-    font-size:17px;
-    font-weight:600;
-    transition:.35s;
-}
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
 
-#yes{
-    background:#ff7aa2;
-    color:white;
-}
+      /* ============================================================
+   AMBIENT BACKGROUND — night sky, stars, moon glow, particles
+   ============================================================ */
+      #sky {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 60% 40% at 80% 8%,
+            rgba(239, 230, 201, 0.1),
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 120% 80% at 50% 100%,
+            rgba(195, 182, 232, 0.08),
+            transparent 60%
+          ),
+          linear-gradient(180deg, #05070f 0%, var(--midnight) 40%, #0b0e20 100%);
+      }
+      .moon {
+        position: absolute;
+        top: 6%;
+        right: 10%;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 35%,
+          #fffdf2,
+          var(--moon) 60%,
+          transparent 75%
+        );
+        box-shadow:
+          0 0 90px 25px rgba(239, 230, 201, 0.18),
+          0 0 200px 80px rgba(239, 230, 201, 0.08);
+        opacity: 0.85;
+      }
+      .star {
+        position: absolute;
+        border-radius: 50%;
+        background: var(--starlight);
+        box-shadow: 0 0 6px 1px rgba(245, 243, 250, 0.6);
+      }
+      .heart-particle {
+        position: absolute;
+        font-size: 14px;
+        color: var(--blush);
+        opacity: 0;
+        pointer-events: none;
+        filter: drop-shadow(0 0 6px rgba(240, 185, 201, 0.6));
+      }
 
-#yes:hover{
-    transform:scale(1.06);
-}
+      /* cursor glow */
+      #cursorGlow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(240, 185, 201, 0.55),
+          rgba(195, 182, 232, 0.18) 55%,
+          transparent 75%
+        );
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 9999;
+        mix-blend-mode: screen;
+        transition:
+          width 0.25s var(--ease-silk),
+          height 0.25s var(--ease-silk);
+      }
+      @media (max-width: 820px) {
+        #cursorGlow {
+          display: none;
+        }
+      }
 
-#no{
-    position:absolute;
-    left:230px;
-    top:0;
-    background:#ffffff;
-    color:#ff6b8a;
-    border:2px solid #ffd6e2;
-}
+      /* ============================================================
+   GLASS SURFACES
+   ============================================================ */
+      .glass {
+        background: linear-gradient(
+          155deg,
+          rgba(23, 29, 61, 0.55),
+          rgba(16, 21, 43, 0.55)
+        );
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(18px) saturate(140%);
+        -webkit-backdrop-filter: blur(18px) saturate(140%);
+        box-shadow:
+          0 20px 60px -20px rgba(0, 0, 0, 0.6),
+          inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        border-radius: 22px;
+      }
 
-#popup{
-    position:fixed;
-    inset:0;
-    display:none;
-    justify-content:center;
-    align-items:center;
-    background:rgba(255,255,255,.9);
-    z-index:99;
-}
+      /* ============================================================
+   LOADING SCREEN
+   ============================================================ */
+      #loadingScreen {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--midnight);
+        gap: 22px;
+      }
+      .load-constellation {
+        width: 96px;
+        height: 96px;
+      }
+      .load-constellation circle {
+        fill: var(--starlight);
+      }
+      .load-constellation path {
+        stroke: var(--lavender);
+        stroke-width: 1;
+        fill: none;
+        opacity: 0.6;
+        stroke-dasharray: 220;
+        stroke-dashoffset: 220;
+        animation: drawLine 2.2s ease-in-out infinite;
+      }
+      @keyframes drawLine {
+        50% {
+          stroke-dashoffset: 0;
+        }
+        100% {
+          stroke-dashoffset: -220;
+        }
+      }
+      .load-text {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1.15rem;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+      }
 
-.popup-box{
-    text-align:center;
-}
+      /* ============================================================
+   LOCK SCREEN
+   ============================================================ */
+      #lockScreen {
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        opacity: 0;
+      }
+      .lock-card {
+        width: 100%;
+        max-width: 440px;
+        padding: 52px 40px 44px;
+        text-align: center;
+        position: relative;
+      }
+      .lock-title {
+        font-size: 1.7rem;
+        font-style: italic;
+        color: var(--starlight);
+        margin-bottom: 18px;
+      }
+      .lock-sub {
+        font-size: 0.95rem;
+        line-height: 1.9;
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+      .lock-sub .heart-line {
+        color: var(--blush);
+      }
+      .lock-form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      #passwordInput {
+        width: 100%;
+        padding: 15px 18px;
+        border-radius: 14px;
+        border: 1px solid var(--glass-border);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--starlight);
+        font-size: 1rem;
+        text-align: center;
+        letter-spacing: 0.05em;
+        outline: none;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+      }
+      #passwordInput:focus {
+        border-color: var(--lavender);
+        box-shadow: 0 0 0 4px rgba(195, 182, 232, 0.12);
+      }
+      #passwordInput::placeholder {
+        color: var(--muted);
+        font-family: var(--font-body);
+      }
+      .lock-hint {
+        font-size: 0.78rem;
+        color: var(--muted);
+        font-style: italic;
+        opacity: 0.8;
+      }
+      .unlock-btn {
+        margin-top: 6px;
+        padding: 14px 20px;
+        border-radius: 14px;
+        border: none;
+        background: linear-gradient(135deg, var(--blush), var(--lavender));
+        color: #1b1330;
+        font-weight: 600;
+        font-size: 0.92rem;
+        letter-spacing: 0.03em;
+        transition:
+          transform 0.3s var(--ease-silk),
+          box-shadow 0.3s var(--ease-silk);
+        box-shadow: 0 10px 30px -10px rgba(195, 182, 232, 0.5);
+      }
+      .unlock-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 36px -10px rgba(195, 182, 232, 0.65);
+      }
+      .shake {
+        animation: shakeAnim 0.45s;
+      }
+      @keyframes shakeAnim {
+        10%,
+        90% {
+          transform: translateX(-2px);
+        }
+        20%,
+        80% {
+          transform: translateX(4px);
+        }
+        30%,
+        50%,
+        70% {
+          transform: translateX(-8px);
+        }
+        40%,
+        60% {
+          transform: translateX(8px);
+        }
+      }
+      .wrong-msg {
+        font-size: 0.8rem;
+        color: var(--blush);
+        min-height: 18px;
+        margin-top: 2px;
+        opacity: 0;
+      }
 
-.popup-box h2{
-    font-size:42px;
-    color:#ff6b8a;
-}
+      /* ============================================================
+   WELCOME (typewriter)
+   ============================================================ */
+      #welcomeScreen {
+        position: fixed;
+        inset: 0;
+        z-index: 85;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+        text-align: center;
+      }
+      .welcome-inner {
+        max-width: 640px;
+      }
+      #typewriter {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: clamp(1.3rem, 3.4vw, 2rem);
+        line-height: 1.7;
+        color: var(--starlight);
+        min-height: 280px;
+        white-space: pre-wrap;
+      }
+      .blink-cursor {
+        display: inline-block;
+        width: 2px;
+        background: var(--lavender);
+        margin-left: 2px;
+        animation: blink 1s step-end infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .continue-btn {
+        margin-top: 32px;
+        padding: 14px 34px;
+        border-radius: 40px;
+        border: 1px solid var(--glass-border);
+        background: rgba(240, 185, 201, 0.08);
+        color: var(--starlight);
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        opacity: 0;
+        transition: all 0.4s var(--ease-silk);
+      }
+      .continue-btn.show {
+        opacity: 1;
+      }
+      .continue-btn:hover {
+        background: rgba(240, 185, 201, 0.18);
+        transform: translateY(-2px);
+      }
 
-.popup-box p{
-    font-size:20px;
-}
+      /* ============================================================
+   APP SHELL
+   ============================================================ */
+      #app {
+        position: relative;
+        z-index: 1;
+        display: none;
+      }
 
-#continue{
-    margin-top:25px;
-    background:#ff7aa2;
-    color:white;
-}
-</style>
-</head>
+      /* top nav */
+      #topNav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 26px;
+        gap: 12px;
+      }
+      .brand {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1.05rem;
+        color: var(--starlight);
+      }
+      #navLinks {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        max-width: 70vw;
+      }
+      #navLinks::-webkit-scrollbar {
+        display: none;
+      }
+      .nav-pill {
+        white-space: nowrap;
+        padding: 9px 16px;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        color: var(--muted);
+        border: 1px solid transparent;
+        transition: all 0.25s var(--ease-silk);
+        background: transparent;
+      }
+      .nav-pill:hover,
+      .nav-pill.active {
+        color: var(--starlight);
+        border-color: var(--glass-border);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      #muteBtn {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid var(--glass-border);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--starlight);
+        font-size: 0.95rem;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-<body>
+      section.page {
+        min-height: 100vh;
+        padding: 130px 24px 100px;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .section-eyebrow {
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--lavender);
+        margin-bottom: 10px;
+      }
+      .section-title {
+        font-size: clamp(1.8rem, 4vw, 2.7rem);
+        font-style: italic;
+        margin-bottom: 16px;
+      }
+      .section-sub {
+        color: var(--muted);
+        font-size: 0.98rem;
+        max-width: 560px;
+        line-height: 1.8;
+        margin-bottom: 52px;
+      }
 
-<div class="card">
+      /* ---------- HOME / DASHBOARD ---------- */
+      #home {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+      }
+      .constellation-heart {
+        width: min(420px, 80vw);
+        height: auto;
+        margin-bottom: 18px;
+        opacity: 0.9;
+      }
+      .constellation-heart .link {
+        stroke: var(--glass-border);
+        stroke-width: 1;
+      }
+      .constellation-heart .link.found {
+        stroke: var(--gold);
+        stroke-width: 1.4;
+        filter: drop-shadow(0 0 4px rgba(227, 184, 115, 0.6));
+      }
+      .constellation-heart .node {
+        fill: var(--muted);
+      }
+      .constellation-heart .node.found {
+        fill: var(--gold);
+        filter: drop-shadow(0 0 5px rgba(227, 184, 115, 0.8));
+      }
+      .welcome-back {
+        font-size: clamp(1.9rem, 5vw, 3rem);
+        font-style: italic;
+      }
+      .welcome-back .name {
+        color: var(--blush);
+      }
+      .home-sub {
+        margin-top: 16px;
+        color: var(--muted);
+        max-width: 480px;
+        line-height: 1.9;
+      }
+      .progress-note {
+        margin-top: 26px;
+        font-size: 0.78rem;
+        color: var(--muted);
+        letter-spacing: 0.03em;
+      }
+      .progress-note b {
+        color: var(--gold);
+        font-weight: 600;
+      }
 
-    <!-- Replace with your gif -->
-    <img class="gif"
-    src="https://media.tenor.com/6zV8J2JQmJ4AAAAi/peach-goma.gif">
+      .tile-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 16px;
+        margin-top: 56px;
+        width: 100%;
+      }
+      .tile {
+        padding: 26px 20px;
+        text-align: left;
+        transition:
+          transform 0.35s var(--ease-silk),
+          box-shadow 0.35s var(--ease-silk);
+      }
+      .tile:hover {
+        transform: translateY(-6px);
+      }
+      .tile-icon {
+        font-size: 1.6rem;
+        margin-bottom: 12px;
+        display: block;
+      }
+      .tile-title {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-style: italic;
+        margin-bottom: 6px;
+      }
+      .tile-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
 
-    <h1>I'm Sorry... 🥺</h1>
+      /* ---------- VOICE NOTES ---------- */
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+      }
+      .vn-card {
+        padding: 26px;
+      }
+      .vn-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .vn-icon {
+        font-size: 1.5rem;
+      }
+      .vn-title {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1.2rem;
+      }
+      .vn-msg {
+        font-size: 0.86rem;
+        color: var(--muted);
+        line-height: 1.75;
+        margin-bottom: 16px;
+        min-height: 56px;
+      }
+      audio {
+        width: 100%;
+        height: 38px;
+        border-radius: 20px;
+      }
+      audio::-webkit-media-controls-panel {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .audio-fallback {
+        font-size: 0.72rem;
+        color: var(--muted);
+        font-style: italic;
+        padding: 10px 14px;
+        border: 1px dashed var(--glass-border);
+        border-radius: 12px;
+        text-align: center;
+      }
 
-    <p>
-        bacha me sach me aapke liye kr rha tha
-        <br>
-        Please mujhe maaf kar do.
-        <br><br>
-        Pinky Promise...
-      aage se ese kabhi koi gift ke liye nhi kilsa hunga bata dunga yrr please is baar maaf krde merko 🥺🥺    </p>
+      /* ---------- LETTERS ---------- */
+      .envelope-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 22px;
+      }
+      .envelope {
+        position: relative;
+        height: 150px;
+        border-radius: 16px;
+        cursor: pointer;
+        perspective: 1000px;
+        background: linear-gradient(
+          155deg,
+          rgba(240, 185, 201, 0.1),
+          rgba(195, 182, 232, 0.06)
+        );
+        border: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s var(--ease-silk);
+      }
+      .envelope:hover {
+        transform: translateY(-4px);
+      }
+      .envelope .flap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: var(--midnight-3);
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        transform-origin: top;
+        transition: transform 0.5s var(--ease-silk);
+        border-bottom: 1px solid var(--glass-border);
+      }
+      .envelope.opened .flap {
+        transform: rotateX(180deg);
+      }
+      .envelope-label {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1rem;
+        color: var(--starlight);
+        text-align: center;
+        padding: 0 16px;
+        z-index: 2;
+      }
+      .envelope-seal {
+        position: absolute;
+        bottom: 14px;
+        right: 16px;
+        font-size: 1rem;
+        opacity: 0.7;
+      }
+      .envelope.opened {
+        opacity: 0.55;
+      }
 
-    <div class="buttons">
+      /* letter modal */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(5, 6, 12, 0.75);
+        backdrop-filter: blur(6px);
+        padding: 24px;
+      }
+      .modal-card {
+        max-width: 520px;
+        width: 100%;
+        padding: 44px 36px;
+        position: relative;
+        text-align: center;
+        max-height: 82vh;
+        overflow-y: auto;
+      }
+      .modal-close {
+        position: absolute;
+        top: 14px;
+        right: 16px;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 1.3rem;
+      }
+      .letter-body {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1.15rem;
+        line-height: 1.95;
+        color: var(--starlight);
+        white-space: pre-line;
+      }
+      .letter-sign {
+        font-family: var(--font-script);
+        font-size: 1.4rem;
+        color: var(--blush);
+        margin-top: 20px;
+        display: block;
+      }
 
-        <button id="yes">
-           jaa Maaf Kiya gulam
-        </button>
+      /* ---------- TIMELINE ---------- */
+      .timeline {
+        position: relative;
+        padding-left: 36px;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 9px;
+        top: 6px;
+        bottom: 6px;
+        width: 1px;
+        background: linear-gradient(var(--lavender), transparent);
+      }
+      .tl-item {
+        position: relative;
+        padding: 0 0 46px 22px;
+      }
+      .tl-item::before {
+        content: "";
+        position: absolute;
+        left: -32px;
+        top: 4px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--midnight);
+        border: 2px solid var(--blush);
+        box-shadow: 0 0 10px rgba(240, 185, 201, 0.5);
+      }
+      .tl-card {
+        padding: 22px 24px;
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .tl-photo {
+        width: 110px;
+        height: 110px;
+        border-radius: 14px;
+        flex-shrink: 0;
+        object-fit: cover;
+        background: linear-gradient(
+          145deg,
+          rgba(195, 182, 232, 0.15),
+          rgba(240, 185, 201, 0.1)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        color: var(--muted);
+      }
+      .tl-text {
+        flex: 1;
+        min-width: 180px;
+      }
+      .tl-date {
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--lavender);
+        margin-bottom: 6px;
+      }
+      .tl-title {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+      }
+      .tl-para {
+        font-size: 0.86rem;
+        color: var(--muted);
+        line-height: 1.75;
+      }
 
-        <button id="no">
-            Nhi Kiya kutte
-        </button>
+      /* ---------- DIGITAL HUG ---------- */
+      #hug {
+        text-align: center;
+      }
+      .hug-btn {
+        padding: 22px 48px;
+        border-radius: 50px;
+        border: none;
+        font-size: 1rem;
+        letter-spacing: 0.04em;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--blush), var(--lavender));
+        color: #1b1330;
+        box-shadow: 0 20px 50px -18px rgba(195, 182, 232, 0.6);
+        transition: transform 0.3s var(--ease-silk);
+      }
+      .hug-btn:hover {
+        transform: scale(1.04);
+      }
+      #hugOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+        overflow: hidden;
+      }
+      #hugOverlay.active {
+        display: flex;
+      }
+      .hug-arm {
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        opacity: 0;
+      }
+      .hug-arm.left {
+        left: 0;
+        transform: translateX(-100%);
+      }
+      .hug-arm.right {
+        right: 0;
+        transform: translateX(100%);
+      }
+      .hug-text {
+        position: relative;
+        z-index: 2;
+        font-family: var(--font-display);
+        font-style: italic;
+        color: var(--starlight);
+        font-size: clamp(1.3rem, 3vw, 1.9rem);
+        opacity: 0;
+        text-align: center;
+        padding: 0 20px;
+      }
+      .hug-close {
+        position: absolute;
+        top: 22px;
+        right: 24px;
+        z-index: 5;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 1.4rem;
+      }
 
+      /* ---------- JAR OF MEMORIES ---------- */
+      #jarWrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .jar-svg {
+        width: min(280px, 60vw);
+        cursor: pointer;
+      }
+      .jar-hearts {
+      }
+      .jar-heart {
+        fill: var(--blush);
+        opacity: 0.85;
+        transition: transform 0.25s;
+      }
+      .jar-hint {
+        margin-top: 18px;
+        font-size: 0.82rem;
+        color: var(--muted);
+        font-style: italic;
+      }
+
+      /* ---------- COUNTDOWN ---------- */
+      .flip-row {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .flip-unit {
+        text-align: center;
+      }
+      .flip-card {
+        width: 92px;
+        height: 104px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-display);
+        font-size: 2.4rem;
+        font-style: italic;
+        color: var(--starlight);
+        background: linear-gradient(
+          160deg,
+          rgba(23, 29, 61, 0.75),
+          rgba(16, 21, 43, 0.75)
+        );
+        border: 1px solid var(--glass-border);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      .flip-label {
+        margin-top: 10px;
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      #countdownDone {
+        display: none;
+        text-align: center;
+      }
+
+      /* ---------- LOVE METER ---------- */
+      #lovemeter {
+        text-align: center;
+      }
+      .meter-wrap {
+        width: min(420px, 80vw);
+        margin: 0 auto;
+      }
+      .meter-track {
+        height: 14px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--glass-border);
+      }
+      .meter-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 20px;
+        background: linear-gradient(
+          90deg,
+          var(--blush),
+          var(--lavender),
+          var(--gold)
+        );
+        background-size: 200% 100%;
+        animation: meterShift 4s linear infinite;
+      }
+      @keyframes meterShift {
+        0% {
+          background-position: 0% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+      .meter-value {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 3rem;
+        margin: 22px 0 6px;
+        color: var(--gold);
+      }
+
+      /* ---------- SURPRISE FAB ---------- */
+      #surpriseFab {
+        position: fixed;
+        bottom: 26px;
+        right: 26px;
+        z-index: 60;
+        padding: 14px 22px;
+        border-radius: 30px;
+        border: 1px solid var(--glass-border);
+        background: rgba(23, 29, 61, 0.7);
+        backdrop-filter: blur(12px);
+        color: var(--starlight);
+        font-size: 0.82rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+        transition: transform 0.3s var(--ease-silk);
+      }
+      #surpriseFab:hover {
+        transform: translateY(-3px);
+      }
+
+      /* ---------- EASTER EGG STARS ---------- */
+      .egg-star {
+        position: absolute;
+        font-size: 1.05rem;
+        color: var(--moon);
+        opacity: 0.55;
+        z-index: 10;
+        background: none;
+        border: none;
+        filter: drop-shadow(0 0 5px rgba(239, 230, 201, 0.7));
+        animation: twinkle 2.6s ease-in-out infinite;
+        transition: transform 0.2s;
+      }
+      .egg-star:hover {
+        transform: scale(1.4);
+      }
+      .egg-star.found {
+        color: var(--gold);
+        opacity: 1;
+        animation: none;
+      }
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      /* ---------- FINAL SECRET ---------- */
+      #finalSecret {
+        position: fixed;
+        inset: 0;
+        z-index: 400;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          180deg,
+          #0b0e20 0%,
+          #3a2a3e 55%,
+          #e3a15e 100%
+        );
+        text-align: center;
+        padding: 30px;
+        overflow: hidden;
+      }
+      #finalSecret .fs-text {
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
+      }
+      #finalSecret p {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+        line-height: 2;
+        color: #1b1330;
+      }
+      #finalSecret .fs-sign {
+        font-family: var(--font-script);
+        font-size: 2rem;
+        color: #fff;
+        display: block;
+        margin-top: 20px;
+      }
+      .fs-close {
+        position: absolute;
+        top: 20px;
+        right: 24px;
+        background: none;
+        border: none;
+        color: #1b1330;
+        font-size: 1.4rem;
+        z-index: 5;
+      }
+
+      /* ---------- utility ---------- */
+      .footer-note {
+        text-align: center;
+        padding: 40px 24px 80px;
+        color: var(--muted);
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+      }
+      @media (max-width: 600px) {
+        section.page {
+          padding: 110px 18px 80px;
+        }
+        #navLinks {
+          max-width: 60vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ================= AMBIENT BACKGROUND ================= -->
+    <div id="sky">
+      <div class="moon"></div>
+    </div>
+    <div id="cursorGlow"></div>
+
+    <!-- ================= LOADING SCREEN ================= -->
+    <div id="loadingScreen">
+      <svg class="load-constellation" viewBox="0 0 100 100">
+        <path d="M50 20 L20 40 L30 75 L70 75 L80 40 Z" />
+        <circle cx="50" cy="20" r="2.4" />
+        <circle cx="20" cy="40" r="2.4" />
+        <circle cx="30" cy="75" r="2.4" />
+        <circle cx="70" cy="75" r="2.4" />
+        <circle cx="80" cy="40" r="2.4" />
+      </svg>
+      <div class="load-text">gathering the stars...</div>
     </div>
 
-</div>
+    <!-- ================= LOCK SCREEN ================= -->
+    <div id="lockScreen">
+      <div class="lock-card glass">
+        <div class="lock-title">🔒 A Place Made Only For You</div>
+        <div class="lock-sub">
+          Open this only when...<br /><br />
+          <span class="heart-line">❤️ You miss me.</span><br />
+          <span class="heart-line">❤️ You want to hear my voice.</span><br />
+          <span class="heart-line"
+            >❤️ You simply want to feel I'm beside you.</span
+          >
+        </div>
+        <div class="lock-form">
+          <input
+            id="passwordInput"
+            type="text"
+            placeholder="Enter Password..."
+            autocomplete="off"
+          />
+          <div class="wrong-msg" id="wrongMsg">
+            That's not quite it — try again, love.
+          </div>
+          <div class="lock-hint">Hint: what you are for me ??</div>
+          <button class="unlock-btn" id="unlockBtn">Unlock ✧</button>
+        </div>
+      </div>
+    </div>
 
-<div id="popup">
+    <!-- ================= WELCOME SCREEN ================= -->
+    <div id="welcomeScreen">
+      <div class="welcome-inner">
+        <div id="typewriter"></div>
+        <button class="continue-btn" id="continueBtn">❤️ Continue</button>
+      </div>
+    </div>
 
-    <div class="popup-box">
+    <!-- ================= APP ================= -->
+    <div id="app">
+      <nav id="topNav">
+        <div class="brand script">Malkin's place</div>
+        <div id="navLinks">
+          <button class="nav-pill" data-target="home">Home</button>
+          <button class="nav-pill" data-target="voicenotes">Voice Notes</button>
+          <button class="nav-pill" data-target="letters">Letters</button>
+          <button class="nav-pill" data-target="timeline">Memories</button>
+          <button class="nav-pill" data-target="hug">Hug</button>
+          <button class="nav-pill" data-target="jar">Jar</button>
+          <button class="nav-pill" data-target="countdown">Countdown</button>
+          <button class="nav-pill" data-target="lovemeter">Love Meter</button>
+        </div>
+        <button id="muteBtn" title="Mute / unmute music">🔈</button>
+      </nav>
 
-        <h2>Thank You ❤️</h2>
-
-        <p>
-            Love you so much bacha. 🥹<br>
-            Thankkk youu sooo soo muchh muwahhh 🫂
+      <!-- ---------- HOME / DASHBOARD ---------- -->
+      <section class="page" id="home">
+        <svg
+          class="constellation-heart"
+          id="constellationHeart"
+          viewBox="0 0 300 260"
+        >
+          <!-- links drawn by JS -->
+          <g id="heartLinks"></g>
+          <g id="heartNodes"></g>
+        </svg>
+        <div class="welcome-back">
+          Welcome Back, <span class="name">Malkin ❤️</span>
+        </div>
+        <p class="home-sub">
+          No matter how far I am... this little place will always bring me
+          closer to you. Every corner here was left for you, on purpose, by
+          hand.
         </p>
+        <div class="progress-note" id="progressNote">
+          ✨ 0 of 7 hidden stars found
+        </div>
 
-        <button id="continue">
-            Continue →
-        </button>
+        <div class="tile-grid">
+          <div class="glass tile" data-target="voicenotes">
+            <span class="tile-icon">🎙️</span>
+            <div class="tile-title">Open When Voice Notes</div>
+            <div class="tile-desc">
+              Ten little recordings, for ten kinds of days.
+            </div>
+          </div>
+          <div class="glass tile" data-target="letters">
+            <span class="tile-icon">💌</span>
+            <div class="tile-title">Open When Letters</div>
+            <div class="tile-desc">
+              Sealed envelopes, written just for these moments.
+            </div>
+          </div>
+          <div class="glass tile" data-target="timeline">
+            <span class="tile-icon">🕰️</span>
+            <div class="tile-title">Memory Timeline</div>
+            <div class="tile-desc">
+              Every first, kept exactly as it happened.
+            </div>
+          </div>
+          <div class="glass tile" data-target="hug">
+            <span class="tile-icon">🤗</span>
+            <div class="tile-title">Digital Hug</div>
+            <div class="tile-desc">
+              The closest thing to my arms, from here.
+            </div>
+          </div>
+          <div class="glass tile" data-target="jar">
+            <span class="tile-icon">🫙</span>
+            <div class="tile-title">Jar of Memories</div>
+            <div class="tile-desc">Pull a heart, land on a memory.</div>
+          </div>
+          <div class="glass tile" data-target="countdown">
+            <span class="tile-icon">⏳</span>
+            <div class="tile-title">Until We Meet Again</div>
+            <div class="tile-desc">Counting every second back to you.</div>
+          </div>
+        </div>
+      </section>
 
+      <!-- ---------- VOICE NOTES ---------- -->
+      <section class="page" id="voicenotes">
+        <div class="section-eyebrow">Open When</div>
+        <h2 class="section-title">Voice Notes</h2>
+        <p class="section-sub">
+          Ten moments, ten recordings. Play whichever one matches today.
+        </p>
+        <div class="card-grid" id="voiceNoteGrid"></div>
+      </section>
+
+      <!-- ---------- LETTERS ---------- -->
+      <section class="page" id="letters">
+        <div class="section-eyebrow">Sealed With Care</div>
+        <h2 class="section-title">Open When Letters</h2>
+        <p class="section-sub">Tap an envelope to open it. Read slowly.</p>
+        <div class="envelope-grid" id="envelopeGrid"></div>
+      </section>
+
+      <!-- ---------- TIMELINE ---------- -->
+      <section class="page" id="timeline">
+        <div class="section-eyebrow">Us, So Far</div>
+        <h2 class="section-title">Memory Timeline</h2>
+        <p class="section-sub">Every first, exactly as I remember it.</p>
+        <div class="timeline" id="timelineList"></div>
+      </section>
+
+      <!-- ---------- DIGITAL HUG ---------- -->
+      <section class="page" id="hug">
+        <div class="section-eyebrow">For The Hard Moments</div>
+        <h2 class="section-title">Digital Hug</h2>
+        <p class="section-sub">
+          Put your phone down for a second after you tap this. Just feel it.
+        </p>
+        <button class="hug-btn" id="hugBtn">🤗 Hug Me</button>
+      </section>
+
+      <!-- ---------- JAR OF MEMORIES ---------- -->
+      <section class="page" id="jar">
+        <div class="section-eyebrow">Pull One Out</div>
+        <h2 class="section-title">Jar of Memories</h2>
+        <p class="section-sub">
+          A jar full of tiny moments. Tap it for a random one.
+        </p>
+        <div id="jarWrap">
+          <svg
+            class="jar-svg"
+            id="jarSvg"
+            viewBox="0 0 200 240"
+            title="Tap for a memory"
+          >
+            <path
+              d="M55 40 h90 v14 c26 20 30 60 30 100 c0 40 -24 70 -85 70 c-61 0 -85 -30 -85 -70 c0 -40 4 -80 30 -100 Z"
+              fill="rgba(195,182,232,0.08)"
+              stroke="var(--glass-border)"
+              stroke-width="2"
+            />
+            <rect
+              x="52"
+              y="26"
+              width="96"
+              height="18"
+              rx="6"
+              fill="rgba(240,185,201,0.15)"
+              stroke="var(--glass-border)"
+              stroke-width="2"
+            />
+            <g id="jarHeartsGroup"></g>
+          </svg>
+          <p class="jar-hint" id="jarHint">Tap the jar</p>
+        </div>
+      </section>
+
+      <!-- ---------- COUNTDOWN ---------- -->
+      <section class="page" id="countdown">
+        <div class="section-eyebrow" style="text-align: center">
+          The Only Number That Matters
+        </div>
+        <h2 class="section-title" style="text-align: center">
+          Until We Meet Again ❤️
+        </h2>
+        <div class="flip-row" id="flipRow" style="margin-top: 50px">
+          <div class="flip-unit">
+            <div class="flip-card" id="cd-days">--</div>
+            <div class="flip-label">Days</div>
+          </div>
+          <div class="flip-unit">
+            <div class="flip-card" id="cd-hours">--</div>
+            <div class="flip-label">Hours</div>
+          </div>
+          <div class="flip-unit">
+            <div class="flip-card" id="cd-mins">--</div>
+            <div class="flip-label">Minutes</div>
+          </div>
+          <div class="flip-unit">
+            <div class="flip-card" id="cd-secs">--</div>
+            <div class="flip-label">Seconds</div>
+          </div>
+        </div>
+        <div id="countdownDone">
+          <h2 class="section-title">We're finally together. 🎉</h2>
+        </div>
+      </section>
+
+      <!-- ---------- LOVE METER ---------- -->
+      <section class="page" id="lovemeter">
+        <div class="section-eyebrow">Today's Reading</div>
+        <h2 class="section-title">Love Meter</h2>
+        <div class="meter-wrap">
+          <div class="meter-track">
+            <div class="meter-fill" id="meterFill"></div>
+          </div>
+          <div class="meter-value">∞%</div>
+          <p class="section-sub" style="margin: 0 auto">Still increasing...</p>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        handcrafted with ❤️ — a private place, just for us
+      </div>
     </div>
 
-</div>
+    <!-- ================= SURPRISE FAB ================= -->
+    <button id="surpriseFab" class="glass" style="display: none">
+      🎲 Surprise Me
+    </button>
 
-<script>
+    <!-- ================= LETTER / SURPRISE MODAL ================= -->
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal-card glass" id="modalCard">
+        <button class="modal-close" id="modalClose">✕</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
 
-const no=document.getElementById("no");
+    <!-- ================= DIGITAL HUG OVERLAY ================= -->
+    <div id="hugOverlay">
+      <button class="hug-close" id="hugClose">✕</button>
+      <svg
+        class="hug-arm left"
+        viewBox="0 0 200 800"
+        preserveAspectRatio="none"
+      >
+        <path d="M0,0 C160,150 160,650 0,800 L0,0Z" fill="#171D3D" />
+      </svg>
+      <svg
+        class="hug-arm right"
+        viewBox="0 0 200 800"
+        preserveAspectRatio="none"
+      >
+        <path d="M200,0 C40,150 40,650 200,800 L200,0Z" fill="#171D3D" />
+      </svg>
+      <div class="hug-text" id="hugText">Imagine this is me hugging you.</div>
+    </div>
 
-function moveButton(){
+    <!-- ================= FINAL SECRET ================= -->
+    <div id="finalSecret">
+      <button class="fs-close" id="fsClose">✕</button>
+      <div class="fs-text">
+        <p>
+          You found everything I left for you.<br />Every letter. Every memory.
+          Every little piece of my heart.<br /><br />
+          But there's still one thing this website can never replace...<br />Actually
+          being with you.<br /><br />
+          Until that day comes, whenever you miss me, come back here.<br />
+          My voice, my words, my memories, and my love will always be waiting
+          for you.<br /><br />
+          I love you. Always.
+        </p>
+        <span class="fs-sign script">— Vinay ❤️</span>
+      </div>
+    </div>
 
-    const x=Math.random()*(window.innerWidth-150);
-    const y=Math.random()*(window.innerHeight-80);
+    <!-- ================= BACKGROUND MUSIC ================= -->
+    <audio id="bgMusic" loop preload="none">
+      <source src="assets/music/ambient.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="heartbeatSfx" preload="none">
+      <source src="assets/audio/heartbeat.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="chimeSfx" preload="none">
+      <source src="assets/audio/chime.mp3" type="audio/mpeg" />
+    </audio>
 
-    no.style.position="fixed";
-    no.style.left=x+"px";
-    no.style.top=y+"px";
-}
+    <script>
+      /* =====================================================================
+   CONFIG.JS — everything YOU are meant to edit lives in this one file.
+   Change the text, add your own photos/audio, and the site updates itself.
+   ===================================================================== */
 
-no.addEventListener("mouseenter",moveButton);
-no.addEventListener("touchstart",moveButton);
+      const CONFIG = {
+        // The password on the lock screen (not case-sensitive, spaces trimmed).
+        password: "everything",
 
-document.getElementById("yes").onclick=()=>{
+        // Names used across the site.
+        yourName: "Vinay",
+        herName: "Malkin",
 
-    document.getElementById("popup").style.display="flex";
+        // The date/time you're reunited — used by the countdown. Format: "YYYY-MM-DDTHH:MM:SS"
+        reunionDate: "2026-12-20T00:00:00",
 
-}
+        // Background ambient music. Put an mp3 in assets/music/ and point to it here.
+        backgroundMusicSrc: "assets/music/ambient.mp3",
+      };
 
-document.getElementById("continue").onclick=()=>{
+      /* ---------------------------------------------------------------------
+   WELCOME SCREEN — the typewriter lines. Each string is typed out, then
+   there's a pause before the next line. Use "" for a longer pause/blank line.
+   --------------------------------------------------------------------- */
+      const WELCOME_LINES = [
+        "If you're here...",
+        "",
+        "Maybe today was difficult.",
+        "Maybe you smiled and wanted to share it with me.",
+        "Maybe you missed my voice.",
+        "",
+        "Or maybe...",
+        "you simply wanted me.",
+        "",
+        "Whatever the reason...",
+        "I'm happy you're here.",
+        "",
+        "Let's spend some time together. ye website thori jaldi bej rha hun but na like today you need it 🥺 but bacha ye link save kr le hamare  har moment pe ye bhot help karegi ye har week with new vn and letter update hogi  ",
+      ];
 
-    // Replace with your main website
-    window.location.href="main.html";
+      /* ---------------------------------------------------------------------
+   VOICE NOTES — add an mp3 under assets/audio/ for each one.
+   If a file is missing, the card will politely say so instead of breaking.
+   --------------------------------------------------------------------- */
+      const VOICE_NOTES = [
+        {
+          icon: "🚨",
+          title: "Emergency",
+          message: "If you're here, you probably need me right now.",
+          audio: "assets/audio/Emergency.m4a",
+        },
+        {
+          icon: "❤️",
+          title: "When You Need to Feel Loved",
+          message: "Listen to this whenever you forget how deeply I love you.",
+          audio: "assets/audio/When you need to feel loved.m4a",
+        },
+        {
+          icon: "🫂",
+          title: "Reassurance",
+          message: "Everything will be okay. I'm with you.",
+          audio: "assets/audio/Reassurance.m4a",
+        },
+        {
+          icon: "🤗",
+          title: "When You Need a Hug",
+          message: "Close your eyes and imagine I'm hugging you tightly.",
+          audio: "assets/audio/When you need hug.m4a",
+        },
+        {
+          icon: "🌧️",
+          title: "Life Feels Unfair",
+          message: "For the days when everything feels too heavy.",
+          audio: "assets/audio/Life unfair.m4a",
+        },
+        {
+          icon: "🧠",
+          title: "Overthinking",
+          message:
+            "Take a deep breath and listen to me instead of your thoughts.",
+          audio: "assets/audio/Overthinking.m4a",
+        },
+        {
+          icon: "🌙",
+          title: "Can't Sleep",
+          message: "Let my voice help you drift to sleep.",
+          audio: "assets/audio/Cant sleep.m4a",
+        },
+        {
+          icon: "🥺",
+          title: "When You Feel Alone",
+          message: "You're never truly alone. I'm always with you.",
+          audio: "assets/audio/Open when you feel alone.m4a",
+        },
+        {
+          icon: "💔",
+          title: "When We Fight",
+          message: "Even after arguments, my love never changes.",
+          audio: "assets/audio/Open when we fight.m4a",
+        },
+        {
+          icon: "😣",
+          title: "When You're Angry at Me",
+          message: "Please hear me out before deciding anything.",
+          audio: "assets/audio/Open when you are angry at me 1.m4a",
+        },
+        {
+          icon: "😭",
+          title: "When You Cry",
+          message: "I wish I could wipe your tears myself.",
+          audio: "assets/audio/Open when you cry.m4a",
+        },
+        {
+          icon: "😔",
+          title: "When You Are Sad",
+          message: "I'm here to remind you that brighter days always come.",
+          audio: "assets/audio/Open when you are sad.m4a",
+        },
+        {
+          icon: "💕",
+          title: "When You Miss Me",
+          message: "Close your eyes. I'm only one heartbeat away.",
+          audio: "assets/audio/Open when you miss me.m4a",
+        },
+      ];
 
-}
+      /* ---------------------------------------------------------------------
+   LETTERS — write the full letter text in `body`. Use \n for line breaks.
+   --------------------------------------------------------------------- */
+      const LETTERS = [
+        {
+          icon: "🧿",
+          title: "Open when you're sad",
+          body: `Heyyy Malkin... 🥹🫂
 
-</script>
+Agar tu ye padh rhi hai na... toh matlab meri pyari si bachi thodi sad hai. Sabse pehle ek kaam kar ek deep breath le, paani pee, aur imagine kar ki me tere saamne baitha hu. 🫂
 
-</body>
+Yrr life kabhi kabhi bhot unfair lagti hai. Kuch din aise hote hai jaha bina reason ke bhi sab ajeeb lagta hai. Smile karne ka mann nahi karta, kisi se baat karne ka mann nahi karta... aur that's okay. Tu har waqt strong rehne ke liye nahi bani. Kabhi kabhi thak jana bhi normal hai. 🥺
+
+Bas ek baat yaad rakhna.
+
+Tu kabhi akeli nahi hai.
+
+Chahe me tere paas physically na hu, mera dil hamesha tere saath hai. Agar possible hota na, toh is letter ke saath ek tight hug bhi bhej deta. Vo wala hug jisme kuch bolna nahi padta... bas sab theek lagne lagta hai. ❤️
+
+Yaad hai hamara first hug? Rose Day? Scooter wali ride? Fusion Café? School ke corridors? Dekha. kitni saari beautiful memories humne bana li. Aur believe me, abhi toh aur bhi bahot memories banana baaki hai.
+
+Please is ek bure din ko apni story ka ending mat samajhna. Ye bas ek page hai. poori book nahi. 🥹
+
+Aur han. mirror me dekhna. Fir yaad karna ki ek pagal sa ladka hai jo genuinely maanta hai ki duniya ki sabse beautiful girl uski Malkin hai. 🥺❤️
+
+Agar rona aa raha hai toh ro lena. Dil halka ho jata hai. Lekin promise kar. sab kuch akele mat sehna. Agar me available hu, bas ek "pagal" text kar dena. Mujhe samajh aa jayega ki meri bachi ko meri zarurat hai. 🫂
+
+No matter kitna bura din ho...
+No matter kitni baar tu toot jaye.
+Main hamesha teri side hu.
+
+I loveeeeeeeee youuuuuuu sooo sooo muchhh mera pyara bachaaaaa. ❤️🫂🎀
+
+Ab ek smile de na my strong bachaaa. 🥹🧿`,
+        },
+      ];
+
+      /* ---------------------------------------------------------------------
+   MEMORY TIMELINE — add a photo path for each memory (put images in
+   assets/photos/). If left blank, a soft placeholder icon shows instead.
+   --------------------------------------------------------------------- */
+      const MEMORIES = [
+        {
+          title: "First Talk",
+          date: "15 Feb 2025 • 1–2 AM",
+          photo: "assets/memories/first-talk.jpg",
+          text: "One random Instagram reply... and somehow it became my favorite conversation ever. Neither of us knew that this late-night chat would completely change our lives.",
+        },
+        {
+          title: "She Gave Me a Bracelet",
+          date: "School Days",
+          photo: "assets/memories/bracelet.jpg",
+          text: "You called me upstairs using Ankush Sir's name just to give me that bracelet. I was nervous, happy, and completely unaware that this tiny gift would become one of my biggest treasures.",
+        },
+        {
+          title: "The Day You Chose Me",
+          date: "22 Dec 2025",
+          photo: "assets/memories/relationship.jpg",
+          text: "Out of everyone in this world... you chose me. I still don't know what I did to deserve that, but I'll always be grateful for the day you became my person.",
+        },
+        {
+          title: "First Hug",
+          date: "14 Jan 2026",
+          photo: "assets/memories/first-hug.jpg",
+          text: "It lasted only a few seconds, but somehow it became one of the safest places I've ever been. I still remember exactly how it felt.",
+        },
+        {
+          title: "Your Birthday",
+          date: "21 Jan 2026",
+          photo: "assets/memories/birthday.jpg",
+          text: "Fusion Café, pizza, pasta, momos, the bouquet, your smile, and those emotional eyes... If I could relive one day forever, it'd probably be this one.",
+        },
+        {
+          title: "Rose Day",
+          date: "7 Feb 2026",
+          photo: "assets/memories/rose-day.jpg",
+          text: "You said we probably wouldn't meet... but we did. A white rose, the tightest hug, and that scooter ride where you hugged me from behind. Goosebumps. Every single time I remember it.",
+        },
+        {
+          title: "First Kiss",
+          date: "22 Mar 2026",
+          photo: "assets/memories/first-kiss.jpg",
+          text: "I remember every heartbeat, every smile, every tiny second. Some memories don't fade—they become a part of you. This is one of them.",
+        },
+        {
+          title: "Every 22nd",
+          date: "Monthly",
+          photo: "assets/memories/monthly.jpg",
+          text: "Every month isn't just another date on the calendar. It's another reminder that somehow, against all odds, I still get to call you mine.",
+        },
+      ];
+      /* ---------------------------------------------------------------------
+   JAR OF MEMORIES — short one-line moments. Add as many as you want —
+   there's no limit, the jar just pulls a random one each tap.
+   --------------------------------------------------------------------- */
+      const JAR_MEMORIES = [
+        "I still remember how you laughed that day.",
+        "You looked so beautiful that evening.",
+        "I replay this memory all the time.",
+        "The way you said my name that one time, still stuck in my head.",
+        "That stupid joke you made that I still randomly laugh about.",
+        "The first time you fell asleep on a call with me.",
+        "How you get quiet right before you say something really sweet.",
+        "That photo of you I have saved that you don't know about.",
+        "The way you argue and still somehow win every time.",
+        "That one text you sent that made my whole week.",
+        "The sound of you getting excited about something small.",
+        "How safe your voice makes me feel on a bad day.",
+        "The way you say 'okay fine' when you're pretending to be annoyed.",
+        "That memory of us being ridiculous over something small.",
+        "The comfortable silences we somehow never needed to fill.",
+      ];
+
+      /* ---------------------------------------------------------------------
+   EASTER EGG STARS — hidden clickable stars scattered across sections.
+   `section` = which section id to place it in, `top`/`left` = position (%).
+   Find all of them to unlock the Final Secret page.
+   --------------------------------------------------------------------- */
+      const EASTER_EGGS = [
+        {
+          section: "home",
+          top: "14%",
+          left: "8%",
+          message:
+            "Secret: the very first thing I noticed about you was your laugh.",
+        },
+        {
+          section: "home",
+          top: "70%",
+          left: "90%",
+          message:
+            "Secret: I've rewritten this website three times because nothing felt good enough for you.",
+        },
+        {
+          section: "voicenotes",
+          top: "6%",
+          left: "92%",
+          message:
+            "Secret: there's a voice note in here I almost didn't have the courage to record.",
+        },
+        {
+          section: "letters",
+          top: "92%",
+          left: "6%",
+          message:
+            "Secret: I cried writing one of these letters. You'll probably guess which one.",
+        },
+        {
+          section: "timeline",
+          top: "50%",
+          left: "95%",
+          message:
+            "Secret: I have way more photos of you saved than I've ever admitted.",
+        },
+        {
+          section: "jar",
+          top: "10%",
+          left: "85%",
+          message:
+            "Secret: this jar could hold a thousand memories and it still wouldn't be enough.",
+        },
+        {
+          section: "lovemeter",
+          top: "85%",
+          left: "12%",
+          message:
+            "You found the last star. Come back to the top — I left something for you. ✨",
+        },
+      ];
+
+      /* ---------------------------------------------------------------------
+   SURPRISE ME — cute one-line quotes mixed in with random letters/voice
+   notes/memories when the Surprise Me button is pressed.
+   --------------------------------------------------------------------- */
+      const SURPRISE_QUOTES = [
+        "You are, quite simply, my favorite person.",
+        "I'd choose this — us — in every version of my life.",
+        "Distance is just a math problem. My feelings don't do math.",
+        "You make ordinary days feel worth remembering.",
+        "Somewhere, right now, I'm probably thinking about you.",
+      ];
+    </script>
+    <script>
+      /* =====================================================================
+   APP.JS — site logic. You shouldn't need to edit this file; all the
+   personal content lives in config.js.
+   ===================================================================== */
+
+      document.addEventListener("DOMContentLoaded", () => {
+        /* ---------------------------------------------------------------
+     0. BACKGROUND — stars, moon-glow, floating heart particles, cursor
+     --------------------------------------------------------------- */
+        const sky = document.getElementById("sky");
+
+        function makeStars(count) {
+          for (let i = 0; i < count; i++) {
+            const s = document.createElement("div");
+            s.className = "star";
+            const size = Math.random() * 2 + 0.6;
+            s.style.width = size + "px";
+            s.style.height = size + "px";
+            s.style.top = Math.random() * 100 + "%";
+            s.style.left = Math.random() * 100 + "%";
+            s.style.opacity = (Math.random() * 0.5 + 0.3).toFixed(2);
+            sky.appendChild(s);
+            gsap.to(s, {
+              opacity: Math.random() * 0.6 + 0.2,
+              duration: Math.random() * 3 + 2,
+              repeat: -1,
+              yoyo: true,
+              delay: Math.random() * 3,
+            });
+          }
+        }
+        makeStars(90);
+
+        function spawnHeartParticle() {
+          const h = document.createElement("div");
+          h.className = "heart-particle";
+          h.textContent = Math.random() > 0.5 ? "♥" : "✦";
+          h.style.left = Math.random() * 100 + "%";
+          h.style.top = "105%";
+          sky.appendChild(h);
+          gsap
+            .timeline({ onComplete: () => h.remove() })
+            .to(h, { opacity: 0.8, duration: 1 })
+            .to(
+              h,
+              {
+                y: -(window.innerHeight * 1.15),
+                x: Math.random() * 80 - 40,
+                duration: Math.random() * 6 + 8,
+                ease: "none",
+              },
+              0,
+            )
+            .to(h, { opacity: 0, duration: 1.5 }, "-=1.5");
+        }
+        setInterval(spawnHeartParticle, 2200);
+
+        // cursor glow
+        const glow = document.getElementById("cursorGlow");
+        window.addEventListener("mousemove", (e) => {
+          glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
+        });
+
+        /* ---------------------------------------------------------------
+     1. LOADING SCREEN -> LOCK SCREEN
+     --------------------------------------------------------------- */
+        const loadingScreen = document.getElementById("loadingScreen");
+        const lockScreen = document.getElementById("lockScreen");
+
+        window.addEventListener("load", () => {
+          setTimeout(() => {
+            gsap.to(loadingScreen, {
+              opacity: 0,
+              duration: 0.7,
+              onComplete: () => (loadingScreen.style.display = "none"),
+            });
+            gsap.to(lockScreen, { opacity: 1, duration: 0.9, delay: 0.2 });
+          }, 1400);
+        });
+
+        /* ---------------------------------------------------------------
+     2. LOCK SCREEN — password check
+     --------------------------------------------------------------- */
+        const passwordInput = document.getElementById("passwordInput");
+        const unlockBtn = document.getElementById("unlockBtn");
+        const wrongMsg = document.getElementById("wrongMsg");
+        const lockCard = document.querySelector(".lock-card");
+        const bgMusic = document.getElementById("bgMusic");
+        const chimeSfx = document.getElementById("chimeSfx");
+        if (CONFIG.backgroundMusicSrc) {
+          bgMusic.querySelector("source").src = CONFIG.backgroundMusicSrc;
+          bgMusic.load();
+        }
+
+        function tryUnlock() {
+          const val = (passwordInput.value || "").trim().toLowerCase();
+          if (val === CONFIG.password.trim().toLowerCase()) {
+            // correct
+            chimeSfx.play().catch(() => {});
+            bgMusic.volume = 0.35;
+            bgMusic.play().catch(() => {});
+            gsap
+              .timeline()
+              .to(lockCard, { scale: 1.04, duration: 0.25, ease: "power2.out" })
+              .to(lockCard, {
+                opacity: 0,
+                y: -20,
+                duration: 0.6,
+                ease: "power2.in",
+              })
+              .to(
+                lockScreen,
+                {
+                  opacity: 0,
+                  duration: 0.5,
+                  onComplete: () => {
+                    lockScreen.style.display = "none";
+                    showWelcome();
+                  },
+                },
+                "-=.2",
+              );
+          } else {
+            passwordInput.classList.add("shake");
+            wrongMsg.style.opacity = 1;
+            setTimeout(() => passwordInput.classList.remove("shake"), 500);
+          }
+        }
+        unlockBtn.addEventListener("click", tryUnlock);
+        passwordInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") tryUnlock();
+        });
+        passwordInput.addEventListener(
+          "input",
+          () => (wrongMsg.style.opacity = 0),
+        );
+
+        /* ---------------------------------------------------------------
+     3. WELCOME SCREEN — typewriter
+     --------------------------------------------------------------- */
+        const welcomeScreen = document.getElementById("welcomeScreen");
+        const typewriterEl = document.getElementById("typewriter");
+        const continueBtn = document.getElementById("continueBtn");
+
+        function showWelcome() {
+          welcomeScreen.style.display = "flex";
+          gsap.fromTo(
+            welcomeScreen,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.8 },
+          );
+          runTypewriter();
+        }
+
+        function runTypewriter() {
+          const fullText = WELCOME_LINES.join("\n");
+          let i = 0;
+          typewriterEl.innerHTML =
+            '<span id="twContent"></span><span class="blink-cursor">&nbsp;</span>';
+          const contentEl = document.getElementById("twContent");
+          function type() {
+            if (i <= fullText.length) {
+              contentEl.textContent = fullText.slice(0, i);
+              const ch = fullText[i - 1];
+              const delay = ch === "\n" ? 380 : Math.random() * 35 + 35;
+              i++;
+              setTimeout(type, delay);
+            } else {
+              continueBtn.classList.add("show");
+            }
+          }
+          type();
+        }
+
+        continueBtn.addEventListener("click", () => {
+          gsap.to(welcomeScreen, {
+            opacity: 0,
+            duration: 0.7,
+            onComplete: () => {
+              welcomeScreen.style.display = "none";
+              enterApp();
+            },
+          });
+        });
+
+        /* ---------------------------------------------------------------
+     4. ENTER APP — reveal dashboard, render all content
+     --------------------------------------------------------------- */
+        const app = document.getElementById("app");
+        const surpriseFab = document.getElementById("surpriseFab");
+
+        function enterApp() {
+          app.style.display = "block";
+          surpriseFab.style.display = "flex";
+          gsap.fromTo(app, { opacity: 0 }, { opacity: 1, duration: 1 });
+          document.getElementById("progressNote").innerHTML =
+            `✨ <span id="foundCount">0</span> of ${EASTER_EGGS.length} hidden stars found`;
+          renderVoiceNotes();
+          renderLetters();
+          renderTimeline();
+          renderJarHearts();
+          renderEasterEggs();
+          drawConstellation();
+          startCountdown();
+          animateLoveMeter();
+        }
+
+        /* ---------------------------------------------------------------
+     5. NAV — smooth scroll + active state + mute toggle
+     --------------------------------------------------------------- */
+        document
+          .querySelectorAll(".nav-pill, .tile[data-target]")
+          .forEach((el) => {
+            el.addEventListener("click", () => {
+              const target = document.getElementById(el.dataset.target);
+              if (target) target.scrollIntoView({ behavior: "smooth" });
+            });
+          });
+
+        const sections = document.querySelectorAll("section.page");
+        const pills = document.querySelectorAll(".nav-pill");
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                pills.forEach((p) =>
+                  p.classList.toggle(
+                    "active",
+                    p.dataset.target === entry.target.id,
+                  ),
+                );
+              }
+            });
+          },
+          { threshold: 0.4 },
+        );
+        sections.forEach((s) => io.observe(s));
+
+        const muteBtn = document.getElementById("muteBtn");
+        let muted = false;
+        muteBtn.addEventListener("click", () => {
+          muted = !muted;
+          bgMusic.muted = muted;
+          muteBtn.textContent = muted ? "🔇" : "🔈";
+        });
+
+        /* ---------------------------------------------------------------
+     6. VOICE NOTES
+     --------------------------------------------------------------- */
+        function renderVoiceNotes() {
+          const grid = document.getElementById("voiceNoteGrid");
+          grid.innerHTML = VOICE_NOTES.map(
+            (v, idx) => `
+      <div class="glass vn-card">
+        <div class="vn-head"><span class="vn-icon">${v.icon}</span><span class="vn-title">${v.title}</span></div>
+        <p class="vn-msg">${v.message}</p>
+        <audio controls preload="none" data-idx="${idx}">
+          <source src="${v.audio}" type="audio/mpeg">
+        </audio>
+      </div>
+    `,
+          ).join("");
+          grid.querySelectorAll("audio").forEach((a) => {
+            a.addEventListener(
+              "error",
+              () => {
+                const fallback = document.createElement("div");
+                fallback.className = "audio-fallback";
+                fallback.textContent =
+                  "Voice note not added yet — drop an mp3 into assets/audio/";
+                a.replaceWith(fallback);
+              },
+              true,
+            );
+          });
+        }
+
+        /* ---------------------------------------------------------------
+     7. LETTERS
+     --------------------------------------------------------------- */
+        function renderLetters() {
+          const grid = document.getElementById("envelopeGrid");
+          grid.innerHTML = LETTERS.map(
+            (l, idx) => `
+      <div class="envelope glass" data-idx="${idx}">
+        <div class="flap"></div>
+        <div class="envelope-label">${l.icon}<br>${l.title}</div>
+        <div class="envelope-seal script">❤</div>
+      </div>
+    `,
+          ).join("");
+          grid.querySelectorAll(".envelope").forEach((env) => {
+            env.addEventListener("click", () => {
+              env.classList.add("opened");
+              const l = LETTERS[env.dataset.idx];
+              setTimeout(
+                () =>
+                  openModal(`
+          <p class="letter-body">${l.body}</p>
+          <span class="letter-sign">— ${CONFIG.yourName} ❤️</span>
+        `),
+                400,
+              );
+            });
+          });
+        }
+
+        /* ---------------------------------------------------------------
+     8. TIMELINE
+     --------------------------------------------------------------- */
+        function renderTimeline() {
+          const list = document.getElementById("timelineList");
+          list.innerHTML = MEMORIES.map(
+            (m) => `
+      <div class="tl-item">
+        <div class="glass tl-card">
+          <div class="tl-photo">${m.photo ? `<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:14px;" onerror="this.parentElement.innerHTML='📷'">` : "📷"}</div>
+          <div class="tl-text">
+            ${m.date ? `<div class="tl-date">${m.date}</div>` : ""}
+            <div class="tl-title">${m.title}</div>
+            <p class="tl-para">${m.text}</p>
+          </div>
+        </div>
+      </div>
+    `,
+          ).join("");
+        }
+
+        /* ---------------------------------------------------------------
+     9. DIGITAL HUG
+     --------------------------------------------------------------- */
+        const hugBtn = document.getElementById("hugBtn");
+        const hugOverlay = document.getElementById("hugOverlay");
+        const hugText = document.getElementById("hugText");
+        const hugClose = document.getElementById("hugClose");
+        const heartbeatSfx = document.getElementById("heartbeatSfx");
+
+        hugBtn.addEventListener("click", () => {
+          hugOverlay.classList.add("active");
+          heartbeatSfx.currentTime = 0;
+          heartbeatSfx.play().catch(() => {});
+          if (navigator.vibrate) navigator.vibrate([120, 80, 120]);
+          gsap
+            .timeline()
+            .to(
+              ".hug-arm.left",
+              { x: 0, opacity: 1, duration: 1.1, ease: "power3.out" },
+              0,
+            )
+            .to(
+              ".hug-arm.right",
+              { x: 0, opacity: 1, duration: 1.1, ease: "power3.out" },
+              0,
+            )
+            .to(hugText, { opacity: 1, duration: 1 }, 0.6);
+        });
+        hugClose.addEventListener("click", closeHug);
+        function closeHug() {
+          heartbeatSfx.pause();
+          gsap
+            .timeline({
+              onComplete: () => hugOverlay.classList.remove("active"),
+            })
+            .to(hugText, { opacity: 0, duration: 0.4 })
+            .to(".hug-arm.left", { x: "-100%", opacity: 0, duration: 0.6 }, 0)
+            .to(".hug-arm.right", { x: "100%", opacity: 0, duration: 0.6 }, 0);
+        }
+
+        /* ---------------------------------------------------------------
+     10. JAR OF MEMORIES
+     --------------------------------------------------------------- */
+        function renderJarHearts() {
+          const group = document.getElementById("jarHeartsGroup");
+          let svgHearts = "";
+          for (let i = 0; i < 14; i++) {
+            const cx = 65 + Math.random() * 70;
+            const cy = 90 + Math.random() * 120;
+            const scale = 0.7 + Math.random() * 0.6;
+            svgHearts += `<path class="jar-heart" transform="translate(${cx},${cy}) scale(${scale})"
+        d="M0 4 C0 -2 -8 -2 -8 4 C-8 9 0 13 0 17 C0 13 8 9 8 4 C8 -2 0 -2 0 4Z"/>`;
+          }
+          group.innerHTML = svgHearts;
+        }
+        const jarSvg = document.getElementById("jarSvg");
+        const jarHint = document.getElementById("jarHint");
+        jarSvg.addEventListener("click", () => {
+          gsap.fromTo(
+            jarSvg,
+            { scale: 1 },
+            {
+              scale: 1.06,
+              duration: 0.15,
+              yoyo: true,
+              repeat: 1,
+              transformOrigin: "50% 100%",
+            },
+          );
+          const memory =
+            JAR_MEMORIES[Math.floor(Math.random() * JAR_MEMORIES.length)];
+          jarHint.textContent = "“" + memory + "”";
+          openModal(`<p class="letter-body">"${memory}"</p>`);
+        });
+
+        /* ---------------------------------------------------------------
+     11. COUNTDOWN
+     --------------------------------------------------------------- */
+        function startCountdown() {
+          const target = new Date(CONFIG.reunionDate).getTime();
+          const els = {
+            d: document.getElementById("cd-days"),
+            h: document.getElementById("cd-hours"),
+            m: document.getElementById("cd-mins"),
+            s: document.getElementById("cd-secs"),
+          };
+          const flipRow = document.getElementById("flipRow");
+          const doneEl = document.getElementById("countdownDone");
+          function tick() {
+            const diff = target - Date.now();
+            if (diff <= 0) {
+              flipRow.style.display = "none";
+              doneEl.style.display = "block";
+              clearInterval(timer);
+              return;
+            }
+            const s = Math.floor(diff / 1000);
+            els.d.textContent = String(Math.floor(s / 86400)).padStart(2, "0");
+            els.h.textContent = String(Math.floor((s % 86400) / 3600)).padStart(
+              2,
+              "0",
+            );
+            els.m.textContent = String(Math.floor((s % 3600) / 60)).padStart(
+              2,
+              "0",
+            );
+            els.s.textContent = String(s % 60).padStart(2, "0");
+          }
+          tick();
+          const timer = setInterval(tick, 1000);
+        }
+
+        /* ---------------------------------------------------------------
+     12. LOVE METER
+     --------------------------------------------------------------- */
+        function animateLoveMeter() {
+          const fill = document.getElementById("meterFill");
+          gsap.to(fill, {
+            width: "100%",
+            duration: 2.4,
+            ease: "power2.out",
+            delay: 0.3,
+          });
+        }
+
+        /* ---------------------------------------------------------------
+     13. SURPRISE ME
+     --------------------------------------------------------------- */
+        surpriseFab.addEventListener("click", () => {
+          const pool = ["letter", "voicenote", "memory", "quote"];
+          const pick = pool[Math.floor(Math.random() * pool.length)];
+          if (pick === "letter") {
+            const l = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+            openModal(
+              `<div class="section-eyebrow" style="text-align:center;">${l.icon} ${l.title}</div><p class="letter-body">${l.body}</p><span class="letter-sign">— ${CONFIG.yourName} ❤️</span>`,
+            );
+          } else if (pick === "voicenote") {
+            const v =
+              VOICE_NOTES[Math.floor(Math.random() * VOICE_NOTES.length)];
+            openModal(
+              `<div class="section-eyebrow" style="text-align:center;">${v.icon} ${v.title}</div><p class="letter-body" style="font-size:1rem;">${v.message}</p><audio controls preload="none" style="margin-top:14px;"><source src="${v.audio}" type="audio/mpeg"></audio>`,
+            );
+          } else if (pick === "memory") {
+            const m = MEMORIES[Math.floor(Math.random() * MEMORIES.length)];
+            openModal(
+              `<div class="section-eyebrow" style="text-align:center;">${m.title}</div><p class="letter-body">${m.text}</p>`,
+            );
+          } else {
+            const q =
+              SURPRISE_QUOTES[
+                Math.floor(Math.random() * SURPRISE_QUOTES.length)
+              ];
+            openModal(
+              `<p class="letter-body script" style="font-size:1.6rem;">"${q}"</p>`,
+            );
+          }
+        });
+
+        /* ---------------------------------------------------------------
+     14. MODAL (shared by letters / jar / surprise / easter eggs)
+     --------------------------------------------------------------- */
+        const modalBackdrop = document.getElementById("modalBackdrop");
+        const modalContent = document.getElementById("modalContent");
+        const modalClose = document.getElementById("modalClose");
+
+        function openModal(html) {
+          modalContent.innerHTML = html;
+          modalBackdrop.style.display = "flex";
+          gsap.fromTo(
+            modalBackdrop,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.3 },
+          );
+          gsap.fromTo(
+            "#modalCard",
+            { y: 24, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.4, delay: 0.05 },
+          );
+        }
+        function closeModal() {
+          gsap.to(modalBackdrop, {
+            opacity: 0,
+            duration: 0.25,
+            onComplete: () => (modalBackdrop.style.display = "none"),
+          });
+        }
+        modalClose.addEventListener("click", closeModal);
+        modalBackdrop.addEventListener("click", (e) => {
+          if (e.target === modalBackdrop) closeModal();
+        });
+
+        /* ---------------------------------------------------------------
+     15. EASTER EGG STARS + CONSTELLATION PROGRESS + FINAL SECRET
+     --------------------------------------------------------------- */
+        const foundEggs = new Set();
+
+        function renderEasterEggs() {
+          EASTER_EGGS.forEach((egg, idx) => {
+            const sectionEl = document.getElementById(egg.section);
+            if (!sectionEl) return;
+            const btn = document.createElement("button");
+            btn.className = "egg-star";
+            btn.textContent = "✨";
+            btn.style.top = egg.top;
+            btn.style.left = egg.left;
+            btn.setAttribute("aria-label", "hidden star");
+            btn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (!foundEggs.has(idx)) {
+                foundEggs.add(idx);
+                btn.classList.add("found");
+                updateProgress();
+              }
+              openModal(
+                `<div class="section-eyebrow" style="text-align:center;">✨ Hidden Star</div><p class="letter-body">${egg.message}</p>`,
+              );
+            });
+            sectionEl.style.position = "relative";
+            sectionEl.appendChild(btn);
+          });
+        }
+
+        function updateProgress() {
+          const countEl = document.getElementById("foundCount");
+          if (countEl) countEl.textContent = foundEggs.size;
+          updateConstellation();
+          if (foundEggs.size === EASTER_EGGS.length) {
+            setTimeout(unlockFinalSecret, 900);
+          }
+        }
+
+        // constellation heart on dashboard
+        const heartLinksG = document.getElementById("heartLinks");
+        const heartNodesG = document.getElementById("heartNodes");
+        let heartPoints = [];
+        const eggNodeIndices = [0, 3, 6, 9, 12, 15, 18];
+
+        function drawConstellation() {
+          const total = 21;
+          heartPoints = [];
+          for (let i = 0; i < total; i++) {
+            const t = (i / total) * Math.PI * 2;
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y =
+              13 * Math.cos(t) -
+              5 * Math.cos(2 * t) -
+              4 * Math.cos(3 * t) -
+              Math.cos(4 * t);
+            heartPoints.push({ x: 150 + x * 8.6, y: 130 - y * 8.6 });
+          }
+          let linksHtml = "";
+          for (let i = 0; i < total; i++) {
+            const a = heartPoints[i],
+              b = heartPoints[(i + 1) % total];
+            linksHtml += `<line class="link" data-i="${i}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;
+          }
+          heartLinksG.innerHTML = linksHtml;
+
+          let nodesHtml = "";
+          heartPoints.forEach((p, i) => {
+            const isEgg = eggNodeIndices.includes(i);
+            nodesHtml += `<circle class="node${isEgg ? " egg" : ""}" data-i="${i}" cx="${p.x}" cy="${p.y}" r="${isEgg ? 3.6 : 2}"/>`;
+          });
+          heartNodesG.innerHTML = nodesHtml;
+        }
+
+        function updateConstellation() {
+          eggNodeIndices.forEach((nodeIdx, eggIdx) => {
+            if (foundEggs.has(eggIdx)) {
+              const node = heartNodesG.querySelector(`[data-i="${nodeIdx}"]`);
+              if (node) node.classList.add("found");
+              const prevLink = heartLinksG.querySelector(
+                `[data-i="${(nodeIdx - 1 + 21) % 21}"]`,
+              );
+              const nextLink = heartLinksG.querySelector(
+                `[data-i="${nodeIdx}"]`,
+              );
+              if (prevLink) prevLink.classList.add("found");
+              if (nextLink) nextLink.classList.add("found");
+            }
+          });
+        }
+
+        /* ---------------------------------------------------------------
+     16. FINAL SECRET
+     --------------------------------------------------------------- */
+        const finalSecret = document.getElementById("finalSecret");
+        const fsClose = document.getElementById("fsClose");
+        function unlockFinalSecret() {
+          finalSecret.style.display = "flex";
+          gsap.fromTo(
+            finalSecret,
+            { opacity: 0 },
+            { opacity: 1, duration: 1.2 },
+          );
+        }
+        fsClose.addEventListener("click", () => {
+          gsap.to(finalSecret, {
+            opacity: 0,
+            duration: 0.6,
+            onComplete: () => (finalSecret.style.display = "none"),
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
